@@ -21,11 +21,15 @@ function info(message) {
 function warning(message) {
   getToast("warning", message);
 }
+function error(message) {
+  getToast("error", message);
+}
 
 const Toast = {
   success,
   info,
   warning,
+  error,
 };
 
 export { Toast };
