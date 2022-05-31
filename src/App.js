@@ -1,6 +1,5 @@
 import { Header, Footer, Navigation, Sidebar } from "components";
-import { checkIsNavigationAndSidebarRequired } from "utils";
-import { RouteSwitch } from "utils";
+import { checkIsNavigationAndSidebarRequired, RouteSwitch } from "utils";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
