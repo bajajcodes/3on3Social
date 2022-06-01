@@ -1,4 +1,5 @@
 import { data } from "./Landing.helpers";
+import { AppHeading } from "components";
 import { useNavigate } from "react-router-dom";
 
 function Landing() {
@@ -14,9 +15,7 @@ function Landing() {
         />
       </figure>
       <section className="p-4 mt-[-4rem] max-w-xl grid grid-rows-[max-content_5px_max-content_5px_repeat(2,max-content)] place-content-center place-items-center gap-2 lg:mt-0">
-        <h1 className="text-6xl text-center font-bold lg:text-normal lg:text-7xl">
-          <span className="text-primary-cta">3on3</span> Social
-        </h1>
+        <AppHeading />
         <div></div>
         <div className="uppercase leading-9 font-bold grid gap-2">
           {data.map(([title, text], index) => (
@@ -28,7 +27,7 @@ function Landing() {
         </div>
         <div></div>
         <button
-          className="w-full p-2 border-solid border-black border-2 bg-primary-cta font-semibold text-2xl leading-8 text-white text-center"
+          className="w-full p-2 border-solid border-black border-2 bg-primary-cta font-semibold text-2xl leading-8 text-white text-center hover:bg-complementary"
           onClick={() => navigate("/signup")}
         >
           Join Now
