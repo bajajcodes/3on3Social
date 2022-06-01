@@ -1,0 +1,9 @@
+export { Bookmarks as BookmarksIcon } from "./Bookmarks";
+export { Explore as ExploreIcon } from "./Explore";
+export { Home as HomeIcon } from "./Home";
+export { NewPost as NewPostIcon } from "./NewPost";
+export { Notifications as NotificationsIcon } from "./Notifications";
+export { Profile as ProfileIcon } from "./Profile";
+export { Eye as PasswordVisibleIcon } from "./Eye";
+export { EyeOff as PasswordInvisibleIcon } from "./EyeOff";
+export { RightArrow as RightArrowIcon } from "./RightArrow";
