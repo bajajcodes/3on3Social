@@ -1,6 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth, db } from "firebaseLocal";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 const signupUser = createAsyncThunk(
@@ -33,4 +37,33 @@ const signupUser = createAsyncThunk(
   }
 );
 
-export { signupUser };
+const loginUser = createAsyncThunk(
+  "login/signInWithEmailAndPassword",
+  async (userInfo, { rejectWithValue }) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        userInfo.email,
+        userInfo.password
+      );
+      const uid = userCredential.user.uid;
+      return { uid };
+    } catch (error) {
+      return rejectWithValue(error.message ?? "Error Message NA");
+    }
+  }
+);
+
+const logoutUser = createAsyncThunk(
+  "logout/signOut",
+  async (_, { rejectWithValue }) => {
+    try {
+      await signOut(auth);
+      return { uid: null };
+    } catch (error) {
+      return rejectWithValue(error.message ?? "Error Message NA");
+    }
+  }
+);
+
+export { signupUser, loginUser, logoutUser };

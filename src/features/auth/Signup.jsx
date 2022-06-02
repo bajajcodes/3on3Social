@@ -117,7 +117,7 @@ function Signup() {
               toggleInputType: toggleConfirmPasswordType,
             }}
           />
-          <span className="h-6  text-red-500 font-bold">
+          <span className="max-h-max text-red-500 font-bold">
             {formErrorMessage}
           </span>
           <FormButton text={primaryFormButtonText} />

@@ -39,8 +39,8 @@ function authStatusAction(
     setFormErrorMessage(message);
   }
   if (status === "success") {
-    setFormButtonText(type);
     Toast.success(message);
+    setFormButtonText(type);
   }
 }
 
