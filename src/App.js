@@ -1,3 +1,4 @@
+import "react-toastify/dist/ReactToastify.css";
 import { Header, Footer, Navigation, Sidebar } from "components";
 import { checkIsNavigationAndSidebarRequired, RouteSwitch } from "utils";
 import { useLocation } from "react-router-dom";

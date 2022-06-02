@@ -18,6 +18,7 @@ module.exports = {
         "primary-background": "#F7F7F7",
         "fill-background": "#C4C4C4",
         "muted-text": "#9A9A9A",
+        complementary: "#D83417",
       },
     },
   },

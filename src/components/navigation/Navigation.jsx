@@ -1,5 +1,5 @@
 import { navLinks } from "./Navigation.helpers";
-import { NewPostIcon } from "./icons";
+import { NewPostIcon } from "icons";
 import { NavLink } from "react-router-dom";
 
 function Navigation() {

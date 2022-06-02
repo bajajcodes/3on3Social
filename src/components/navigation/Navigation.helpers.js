@@ -4,7 +4,7 @@ import {
   ProfileIcon,
   ExploreIcon,
   NotificationsIcon,
-} from "./icons";
+} from "icons";
 
 const navLinks = [
   ["Home", "/home", HomeIcon],
