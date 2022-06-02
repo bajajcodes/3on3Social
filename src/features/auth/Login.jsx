@@ -4,19 +4,20 @@ import {
   authStatusAction,
 } from "./auth.helpers";
 import { useValidateForm } from "hooks";
-import { signupUser } from "./authSlice";
+import { loginUser } from "./authSlice";
 import { AppHeading, FormInput, FormButton } from "components";
 import { RightArrowIcon } from "icons";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function Signup() {
+function Login() {
   const [passwordType, setPasswordType] = useState(passwordInputType);
-  const [confirmPasswordType, setConfirmPasswordType] =
-    useState(passwordInputType);
-  const [primaryFormButtonText, SetPrimaryFormButtonText] = useState("Signup");
+  const [primaryFormButtonText, SetPrimaryFormButtonText] = useState("Login");
   const [formErrorMessage, SetFormErrorMessage] = useState("");
+
+  const [emailInputValue, setEmailInputValue] = useState("");
+  const [passwordInputValue, setPasswordInputValue] = useState("");
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -32,18 +33,23 @@ function Signup() {
     togglePasswordInputType(passwordType, setPasswordType);
   }
 
-  function toggleConfirmPasswordType() {
-    togglePasswordInputType(confirmPasswordType, setConfirmPasswordType);
-  }
-
-  function validateAndSignupUser(event) {
+  function validateAndLoginUser(event) {
     try {
       const body = validateForm(event);
-      if (body.password === body.confirm_password) {
-        dispatch(signupUser(body));
-      } else {
-        throw new Error("Passwords do not match");
-      }
+      dispatch(loginUser(body));
+    } catch (error) {
+      SetFormErrorMessage(error.message);
+    }
+  }
+
+  function fillGuestCredentials(event) {
+    try {
+      event.stopPropagation();
+      setEmailInputValue("guestuser@anon.in");
+      setPasswordInputValue("guestuser");
+      dispatch(
+        loginUser({ email: "guestuser@anon.in", password: "guestuser" })
+      );
     } catch (error) {
       SetFormErrorMessage(error.message);
     }
@@ -53,7 +59,7 @@ function Signup() {
     authStatusAction(
       auth.status,
       auth.message,
-      "Signup",
+      "Login",
       SetPrimaryFormButtonText,
       SetFormErrorMessage
     );
@@ -63,29 +69,11 @@ function Signup() {
     <main className="main grid gap-8 place-items-center py-4 px-16">
       <AppHeading />
       <section className="bg-white grid gap-8 p-4 place-items-center max-w-lg  py-7 px-12 drop-shadow-[4px_4px_12px_black]">
-        <h2 className="text-4xl font-bold">Signup</h2>
+        <h2 className="text-4xl font-bold">Login</h2>
         <form
-          onSubmit={(e) => validateAndSignupUser(e)}
+          onSubmit={(e) => validateAndLoginUser(e)}
           className="w-[18.5rem] grid gap-4 place-items-center font-medium"
         >
-          <FormInput
-            info={{
-              labelText: "Name",
-              type: "text",
-              minLength: "5",
-              placeholder: "Enter Name",
-              name: "name",
-            }}
-          />
-          <FormInput
-            info={{
-              labelText: "Username",
-              type: "text",
-              minLength: "5",
-              placeholder: "Enter Username",
-              name: "username",
-            }}
-          />
           <FormInput
             info={{
               labelText: "Email address",
@@ -93,6 +81,7 @@ function Signup() {
               minLength: "5",
               placeholder: "Enter Email address",
               name: "email",
+              value: emailInputValue,
             }}
           />
           <FormInput
@@ -102,30 +91,25 @@ function Signup() {
               minLength: "8",
               placeholder: "Enter Password",
               name: "password",
+              value: passwordInputValue,
               icon: true,
               toggleInputType: togglePasswordType,
-            }}
-          />
-          <FormInput
-            info={{
-              labelText: "Confirm Password",
-              type: confirmPasswordType,
-              minLength: "8",
-              placeholder: "Enter Confirm Password",
-              name: "confirm_password",
-              icon: true,
-              toggleInputType: toggleConfirmPasswordType,
             }}
           />
           <span className="max-h-max text-red-500 font-bold">
             {formErrorMessage}
           </span>
           <FormButton text={primaryFormButtonText} />
+          <FormButton
+            text={"Guest Login"}
+            isSecondary
+            onClickHandler={fillGuestCredentials}
+          />
           <div
             className="flex cursor-pointer hover:underline"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/signup")}
           >
-            <span>Already have an account</span>
+            <span>Create New Account</span>
             <RightArrowIcon />
           </div>
         </form>
@@ -134,4 +118,4 @@ function Signup() {
   );
 }
 
-export { Signup };
+export { Login };

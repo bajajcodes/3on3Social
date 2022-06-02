@@ -7,3 +7,5 @@ export { Profile as ProfileIcon } from "./Profile";
 export { Eye as PasswordVisibleIcon } from "./Eye";
 export { EyeOff as PasswordInvisibleIcon } from "./EyeOff";
 export { RightArrow as RightArrowIcon } from "./RightArrow";
+export { Login as LoginIcon } from "./Login";
+export { Logout as LogoutIcon } from "./Logout";

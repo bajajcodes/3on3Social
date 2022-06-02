@@ -20,7 +20,9 @@ function FormInput({ info }) {
         <PasswordInvisibleIcon toggleInputType={info.toggleInputType} />
       )}
       <input
-        className="px-2 py-1 font-medium border-2 border-solid border-black col-start-1 col-end-3 placeholder:font-medium active:border-2 focus:border-2 active:outline-none focus:outline-none"
+        className={`px-2 py-1 border-2 border-solid border-black col-start-1 col-end-3 ${
+          info.type !== "password" ? "font-medium" : "font-black"
+        } placeholder:font-medium active:border-2 focus:border-2 active:outline-none focus:outline-none`}
         name={info.name ?? "NA"}
         type={info.type ?? "text"}
         value={value || inputValue}
