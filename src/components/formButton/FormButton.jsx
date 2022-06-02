@@ -1,6 +1,13 @@
-function FormButton({ text }) {
+function FormButton({ text, isSecondary = false, onClickHandler }) {
   return (
-    <button className="bg-primary-cta text-white font-semibold w-full py-2 px-4 hover:bg-complementary">
+    <button
+      className={`font-semibold w-full py-2 px-4 border-solid border-black border-2 hover:bg-complementary ${
+        !isSecondary
+          ? "bg-primary-cta text-white"
+          : "text-primary-cta hover:text-white"
+      }`}
+      onClick={(e) => onClickHandler && onClickHandler(e)}
+    >
       {text}
     </button>
   );
