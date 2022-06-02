@@ -1,2 +1,3 @@
 export { Signup } from "./Signup";
-export { authReducer, signupUser } from "./authSlice";
+export { Login } from "./Login";
+export { authReducer, signupUser, logoutUser } from "./authSlice";
