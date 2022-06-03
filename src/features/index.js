@@ -1,1 +1,8 @@
-export { Signup, Login, authReducer, signupUser, logoutUser } from "./auth";
+export {
+  Signup,
+  Login,
+  authReducer,
+  signupUser,
+  logoutUser,
+  loggedIn,
+} from "./auth";

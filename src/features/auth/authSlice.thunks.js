@@ -21,6 +21,9 @@ const signupUser = createAsyncThunk(
         name: userInfo.name,
         username: userInfo.username,
         email: userInfo.email,
+        profileImageUrl: "",
+        bio: "",
+        portfolioUrl: "",
         following: [],
         followers: [],
         posts: [],
@@ -28,9 +31,8 @@ const signupUser = createAsyncThunk(
         comments: [],
         bookmarks: [],
         authProvider: "local",
-        dateCreated: new Date().toDateString(),
+        createdAt: new Date().toDateString(),
       });
-      return { uid };
     } catch (error) {
       return rejectWithValue(error.message ?? "Error Message NA");
     }
@@ -41,13 +43,11 @@ const loginUser = createAsyncThunk(
   "login/signInWithEmailAndPassword",
   async (userInfo, { rejectWithValue }) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         userInfo.email,
         userInfo.password
       );
-      const uid = userCredential.user.uid;
-      return { uid };
     } catch (error) {
       return rejectWithValue(error.message ?? "Error Message NA");
     }

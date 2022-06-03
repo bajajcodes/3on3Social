@@ -1,7 +1,7 @@
 import { LocalStorage } from "utils";
 import { getAuthInitialState } from "./auth.helpers";
 import { signupUser, loginUser, logoutUser } from "./authSlice.thunks";
-import { thunkFulFilled, thunkRejected } from "./authSlice.thunks.helpers";
+import { thunkRejected } from "./authSlice.thunks.helpers";
 import { thunkLoading } from "features/thunks.helpers";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -18,12 +18,24 @@ const name = "auth";
 const authSlice = createSlice({
   name,
   initialState,
+  reducers: {
+    loggedIn: (state, action) => {
+      state.status = "success";
+      state.hasError = false;
+      state.isLoggedIn = true;
+      state.uid = action.payload.uid;
+      LocalStorage.set("auth", {
+        isLoggedIn: state.isLoggedIn,
+        uid: state.uid,
+      });
+    },
+  },
   extraReducers: {
     [signupUser.pending]: (state) => {
       thunkLoading(state);
     },
-    [signupUser.fulfilled]: (state, action) => {
-      thunkFulFilled(state, action, "Successful Signup");
+    [signupUser.fulfilled]: (state) => {
+      state.message = "Successful Signup";
     },
     [signupUser.rejected]: (state, action) => {
       thunkRejected(state, action);
@@ -31,8 +43,8 @@ const authSlice = createSlice({
     [loginUser.pending]: (state) => {
       thunkLoading(state);
     },
-    [loginUser.fulfilled]: (state, action) => {
-      thunkFulFilled(state, action, "Successful Login");
+    [loginUser.fulfilled]: (state) => {
+      state.message = "Successful Login";
     },
     [loginUser.rejected]: (state, action) => {
       thunkRejected(state, action);
@@ -54,7 +66,7 @@ const authSlice = createSlice({
   },
 });
 
-
 const authReducer = authSlice.reducer;
+const { loggedIn } = authSlice.actions;
 
-export { authReducer, signupUser, loginUser, logoutUser };
+export { authReducer, signupUser, loginUser, logoutUser, loggedIn };
