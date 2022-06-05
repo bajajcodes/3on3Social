@@ -9,3 +9,5 @@ export { EyeOff as PasswordInvisibleIcon } from "./EyeOff";
 export { RightArrow as RightArrowIcon } from "./RightArrow";
 export { Login as LoginIcon } from "./Login";
 export { Logout as LogoutIcon } from "./Logout";
+export { Close as CloseIcon } from "./Close";
+export { Camera as CameraIcon } from "./Camera";

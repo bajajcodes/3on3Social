@@ -5,3 +5,8 @@ export { Sidebar } from "./sidebar/Sidebar";
 export { AppHeading } from "./appHeading/AppHeading";
 export { FormInput } from "./formInput/FormInput";
 export { FormButton } from "./formButton/FormButton";
+export { Button } from "./button/Button";
+export { DisplayName } from "./displayName/DisplayName";
+export { ProfilePhoto } from "./profilePhoto/ProfilePhoto";
+export { EditProfileModal } from "./editProfileModal/EditProfileModal";
+export { FormTextArea } from "./formTextArea/FormTextArea";

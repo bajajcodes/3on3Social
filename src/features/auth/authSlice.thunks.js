@@ -23,7 +23,7 @@ const signupUser = createAsyncThunk(
         email: userInfo.email,
         profileImageUrl: "",
         bio: "",
-        portfolioUrl: "",
+        website: "",
         following: [],
         followers: [],
         posts: [],
@@ -43,11 +43,7 @@ const loginUser = createAsyncThunk(
   "login/signInWithEmailAndPassword",
   async (userInfo, { rejectWithValue }) => {
     try {
-      await signInWithEmailAndPassword(
-        auth,
-        userInfo.email,
-        userInfo.password
-      );
+      await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password);
     } catch (error) {
       return rejectWithValue(error.message ?? "Error Message NA");
     }
