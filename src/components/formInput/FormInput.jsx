@@ -1,14 +1,19 @@
 import { PasswordVisibleIcon, PasswordInvisibleIcon } from "icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function FormInput({ info }) {
-  const { value = "" } = info;
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(info?.value ?? "");
 
   function onChangeHandler(event) {
     const value = event.target.value;
     setInputValue(value);
   }
+
+  useEffect(() => {
+    if (info.value) {
+      setInputValue(info.value);
+    }
+  }, [info.value]);
 
   return (
     <label className="grid w-full">
@@ -25,7 +30,7 @@ function FormInput({ info }) {
         } placeholder:font-medium active:border-2 focus:border-2 active:outline-none focus:outline-none`}
         name={info.name ?? "NA"}
         type={info.type ?? "text"}
-        value={value || inputValue}
+        value={inputValue}
         minLength={info.minLength ?? ""}
         maxLength={info.maxLength ?? ""}
         placeholder={info.placeholder ?? ""}
