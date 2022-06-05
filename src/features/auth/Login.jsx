@@ -63,7 +63,7 @@ function Login() {
       SetPrimaryFormButtonText,
       SetFormErrorMessage
     );
-  }, [auth.status]);
+  }, [auth.message, auth.status]);
 
   return (
     <main className="main grid gap-8 place-items-center py-4 px-16">

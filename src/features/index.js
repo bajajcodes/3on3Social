@@ -6,3 +6,8 @@ export {
   logoutUser,
   loggedIn,
 } from "./auth";
+export {
+  profileReducer,
+  updatedUserProfile,
+  updateProfileState
+} from "./profile";
