@@ -3,12 +3,12 @@ import { Button, FormInput, ProfilePhoto, FormTextArea } from "components";
 import { useEditProfile } from "./EditProfile.hook";
 import { useState, useRef } from "react";
 
-function EditProfile({ closeModal, display, info }) {
+function EditProfile({ closeModal, display, info, editProfileFormOpened }) {
   const [profilePhotoSource, setProfilePhotoSource] = useState(
     info?.profileImageUrl ?? ""
   );
   const isFormHasChanges = useRef(false);
-  const { validateAndUpdateProfileInfo } = useEditProfile(closeModal);
+  const { validateAndUpdateProfileInfo } = useEditProfile(closeModal, editProfileFormOpened);
 
   function imageInput(event) {
     const file = event.target.files[0];

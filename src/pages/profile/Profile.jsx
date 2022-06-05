@@ -11,7 +11,6 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { updateProfileState } from "features";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { info } from "autoprefixer";
 
 function Profile() {
   const [displayEditProfileModal, setDisplayEditProfileModal] = useState(false);
@@ -71,9 +70,9 @@ function Profile() {
             {userInfo.website && (
               <a
                 target="_blank"
-                rel="noreferrer"
-                href={info.website}
+                href={`${userInfo.website}`}
                 className="text-red-500 hover:underline"
+                rel="noreferrer"
               >
                 {userInfo.website}
               </a>

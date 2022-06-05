@@ -1,10 +1,10 @@
 import { Toast } from "utils";
-import { updatedUserProfile } from "features";
+import { updatedUserProfile, updateProfileState } from "features";
 import { storage } from "firebaseLocal";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { useSelector, useDispatch } from "react-redux";
 
-function useEditProfile(closeModal) {
+function useEditProfile(closeModal, editProfileFormOpened) {
   const { uid } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -22,6 +22,7 @@ function useEditProfile(closeModal) {
 
   async function postUpdatedUserInfo(userInfo) {
     try {
+      dispatch(updateProfileState({ status: "updating" }));
       if (userInfo.file.size !== 0) {
         const url = await uploadImage(userInfo.file, userInfo.uid);
         userInfo.profileImageUrl = url;
@@ -33,7 +34,7 @@ function useEditProfile(closeModal) {
     }
   }
 
-  function validateAndUpdateProfileInfo(event, isFormHasChanges) {
+  async function validateAndUpdateProfileInfo(event, isFormHasChanges) {
     const userInfo = {
       uid: uid,
     };
@@ -45,7 +46,8 @@ function useEditProfile(closeModal) {
         for (let [k, v] of formData.entries()) {
           userInfo[k] = v;
         }
-        postUpdatedUserInfo(userInfo);
+        editProfileFormOpened();
+        await postUpdatedUserInfo(userInfo);
       }
       closeModal();
     } catch (error) {
