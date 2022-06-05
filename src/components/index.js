@@ -10,3 +10,4 @@ export { DisplayName } from "./displayName/DisplayName";
 export { ProfilePhoto } from "./profilePhoto/ProfilePhoto";
 export { EditProfileModal } from "./editProfileModal/EditProfileModal";
 export { FormTextArea } from "./formTextArea/FormTextArea";
+export { Loader } from "./loader/Loader";
