@@ -11,3 +11,4 @@ export { ProfilePhoto } from "./profilePhoto/ProfilePhoto";
 export { EditProfileModal } from "./editProfileModal/EditProfileModal";
 export { FormTextArea } from "./formTextArea/FormTextArea";
 export { Loader } from "./loader/Loader";
+export { Post } from "./post/Post";

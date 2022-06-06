@@ -4,6 +4,7 @@ import {
   ProfilePhoto,
   EditProfileModal,
   Loader,
+  Post,
 } from "components";
 import { Toast } from "utils";
 import { db } from "firebaseLocal";
@@ -97,8 +98,9 @@ function Profile() {
           <section className="w-full max-w-2xl grid gap-2">
             <h1 className="text-4xl font-medium">Your Posts</h1>
             <section>
-              All Posts will come here, I am placeholder for future posts
-              component
+              <Post />
+              <Post />
+              <Post />
             </section>
           </section>
         )}
