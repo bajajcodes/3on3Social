@@ -66,13 +66,13 @@ function Login() {
   }, [auth.message, auth.status]);
 
   return (
-    <main className="main grid gap-8 place-items-center py-4 px-16">
+    <main className="main grid grid-rows-[max-content_1fr] gap-8 place-items-center py-4 lg:px-16 lg:py-16">
       <AppHeading />
-      <section className="bg-white grid gap-8 p-4 place-items-center max-w-lg  py-7 px-12 drop-shadow-[4px_4px_12px_black]">
+      <section className="bg-white grid gap-8 place-items-center max-w-lg  py-7 px-7 lg:px-12 drop-shadow-[4px_4px_12px_black]">
         <h2 className="text-4xl font-bold">Login</h2>
         <form
           onSubmit={(e) => validateAndLoginUser(e)}
-          className="w-[18.5rem] grid gap-4 place-items-center font-medium"
+          className="w-full lg:w-[18.5rem] grid gap-4 place-items-center font-medium"
         >
           <FormInput
             info={{
