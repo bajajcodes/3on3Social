@@ -111,7 +111,7 @@ function Profile() {
   }, []);
 
   useEffect(() => {
-    if (postStatus === "success" && postMessage) {
+    if (postStatus === "success" && postMessage && postMessage === "Loading") {
       Toast.info(postMessage);
     }
   }, [postMessage, postStatus]);
