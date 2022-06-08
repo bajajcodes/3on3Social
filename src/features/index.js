@@ -9,5 +9,14 @@ export {
 export {
   profileReducer,
   updatedUserProfile,
-  updateProfileState
+  updateProfileState,
 } from "./profile";
+export {
+  postReducer,
+  createNewPost,
+  updatePost,
+  deletePost,
+  updatePostStatus,
+  updatePostsArray,
+} from "./post";
+export { postModalReducer, openModal, closeModal } from "./postModal";
