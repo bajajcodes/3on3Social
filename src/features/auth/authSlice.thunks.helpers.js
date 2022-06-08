@@ -1,4 +1,5 @@
 import { LocalStorage } from "utils";
+import { serverTimestamp } from "firebase/firestore";
 
 function thunkFulFilled(state, action, message) {
   state.status = "success";
@@ -28,4 +29,23 @@ function thunkRejected(state, action) {
   });
 }
 
-export { thunkFulFilled, thunkRejected };
+function createUserProfile(name, username, email) {
+  return {
+    name,
+    username,
+    email,
+    profileImageUrl: "",
+    bio: "",
+    website: "",
+    following: [],
+    followers: [],
+    posts: [],
+    likes: [],
+    comments: [],
+    bookmarks: [],
+    authProvider: "local",
+    createdAt: serverTimestamp(),
+  };
+}
+
+export { thunkFulFilled, thunkRejected, createUserProfile };

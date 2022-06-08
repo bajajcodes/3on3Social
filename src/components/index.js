@@ -12,3 +12,4 @@ export { EditProfileModal } from "./editProfileModal/EditProfileModal";
 export { FormTextArea } from "./formTextArea/FormTextArea";
 export { Loader } from "./loader/Loader";
 export { Post } from "./post/Post";
+export { PostModal } from "./postModal/PostModal";

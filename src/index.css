@@ -38,6 +38,11 @@
   grid-area: footer;
 }
 
+.pre-formatting {
+  word-break: break-word;
+  white-space: break-spaces;
+}
+
 @media (min-width: 768px) {
   .app {
     grid-template-areas: "header header header" "navigation content sidebar" "navigation content sidebar" "footer footer footer";

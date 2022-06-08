@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth, db } from "firebaseLocal";
+import { createUserProfile } from "./authSlice.thunks.helpers";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -16,23 +17,13 @@ const signupUser = createAsyncThunk(
         userInfo.email,
         userInfo.password
       );
+      const userProfile = createUserProfile(
+        userInfo.name,
+        userInfo.username,
+        userInfo.email
+      );
       const uid = userCredential.user.uid;
-      await setDoc(doc(db, "users", uid), {
-        name: userInfo.name,
-        username: userInfo.username,
-        email: userInfo.email,
-        profileImageUrl: "",
-        bio: "",
-        website: "",
-        following: [],
-        followers: [],
-        posts: [],
-        likes: [],
-        comments: [],
-        bookmarks: [],
-        authProvider: "local",
-        createdAt: new Date().toDateString(),
-      });
+      await setDoc(doc(db, "users", uid), userProfile);
     } catch (error) {
       return rejectWithValue(error.message ?? "Error Message NA");
     }
@@ -40,7 +31,7 @@ const signupUser = createAsyncThunk(
 );
 
 const loginUser = createAsyncThunk(
-  "login/signInWithEmailAndPassword",
+  "thunk/signInWithEmailAndPassword",
   async (userInfo, { rejectWithValue }) => {
     try {
       await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password);
@@ -51,7 +42,7 @@ const loginUser = createAsyncThunk(
 );
 
 const logoutUser = createAsyncThunk(
-  "logout/signOut",
+  "thunk/signOut",
   async (_, { rejectWithValue }) => {
     try {
       await signOut(auth);

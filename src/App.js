@@ -1,15 +1,16 @@
 import "react-toastify/dist/ReactToastify.css";
-import { Header, Footer, Navigation, Sidebar } from "components";
+import { Header, Footer, Navigation, Sidebar, PostModal } from "components";
 import { checkIsNavigationAndSidebarRequired, RouteSwitch, Toast } from "utils";
 import { loggedIn } from "features";
 import { auth } from "firebaseLocal";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 function App() {
+  const { show } = useSelector((state) => state.postModal);
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -41,6 +42,7 @@ function App() {
       {isNavigationAndSidebarRequired && <Sidebar />}
       <Footer />
       <ToastContainer />
+      {show && <PostModal />}
     </div>
   );
 }

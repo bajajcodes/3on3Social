@@ -6,7 +6,7 @@ function getToast(type, message) {
     autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
-    pauseOnHover: false,
+    pauseOnHover: true,
   });
 }
 

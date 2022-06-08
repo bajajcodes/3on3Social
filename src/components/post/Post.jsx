@@ -1,31 +1,74 @@
 import { ProfilePhoto } from "../profilePhoto/ProfilePhoto";
 import { DisplayName } from "../displayName/DisplayName";
+import { PostUpdateModal } from "./PostUpdateModal";
+import {
+  EllipseIcon,
+  LikeIcon,
+  CommentIcon,
+  ShareIcon,
+  BookmarksIcon,
+} from "icons";
+import { useState } from "react";
 
-function Post() {
+function Post({ postInfo }) {
+  const [updatePostModalDisplay, setUpdatePostModalDisplay] = useState("");
+
+  function togglePostModalDisplay() {
+    setUpdatePostModalDisplay((p) => (p === "block" ? "hidden" : "block"));
+  }
+
   return (
-    <article className="p-4 bg-white w-full max-w-2xl grid grid-cols-[max-content_1fr] gap-2 mb-4">
-      <ProfilePhoto isMedium />
-      <div className="grid g-4">
-        <div className="flex justify-center items-center">
-          <DisplayName name="Shubham Bajaj" username="shubhambajaj" isRowWise />
-          <span>.</span>
-          <span>Jun 27</span>
-          <span className="ml-auto">...</span>
+    <article className="p-4 bg-white w-full max-w-xl grid grid-cols-[max-content_1fr] gap-2 mb-4">
+      <ProfilePhoto
+        extraClasses="lg:w-16 lg:h-16"
+        source={postInfo.profileImageUrl}
+      />
+      <div>
+        <div className="w-full flex flex-wrap place-items-center gap-2">
+          <DisplayName
+            name={postInfo.name}
+            username={postInfo.username}
+            isBaseSize
+            extraClasses="lg:flex-row"
+          />
+          <span>
+            <span className="text-xl font-bold">·</span>
+            <span>{postInfo.createdAt}</span>
+          </span>
+          <button
+            className="ml-auto relative z-0"
+            onClick={() => togglePostModalDisplay()}
+          >
+            <EllipseIcon />
+            {updatePostModalDisplay && (
+              <PostUpdateModal
+                display={updatePostModalDisplay}
+                togglePostModalDisplay={togglePostModalDisplay}
+                postId={postInfo.id}
+                postInfo={postInfo}
+              />
+            )}
+          </button>
         </div>
-        <p>
-          when an unknown printer took a galley of type and scrambled it to make
-          a type specimen book. It has survived not only five centuries, but
-          also the leap into electronic typesetting, remaining essentially
-          unchanged. It was popularised in the 1960s with the release of
-          Letraset sheets containing Lorem Ipsum passages, and more recently
-          with desktop publishing software like Aldus PageMaker including
-          versions of Lorem Ipsum.
-        </p>
-        <div className="flex justify-between">
-          <button>Like</button>
-          <button>Comment</button>
-          <button>Share</button>
-          <button>Bookmark</button>
+        <pre className="text-base whitespace-pre-line break-words pre-formatting">
+          {postInfo.content}
+        </pre>
+        {postInfo.imageUrl && (
+          <img src={postInfo.imageUrl} className="h-52 m-auto" />
+        )}
+        <div className="flex flex-wrap place-items-center justify-between mt-2">
+          <button>
+            <LikeIcon />
+          </button>
+          <button>
+            <CommentIcon />
+          </button>
+          <button>
+            <ShareIcon />
+          </button>
+          <button>
+            <BookmarksIcon />
+          </button>
         </div>
       </div>
     </article>

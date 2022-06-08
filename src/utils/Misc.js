@@ -5,4 +5,10 @@ function checkIsNavigationAndSidebarRequired(pathname) {
   return true;
 }
 
-export { checkIsNavigationAndSidebarRequired };
+function imageInput(event) {
+  const file = event.target.files[0];
+  const source = URL.createObjectURL(file);
+  return source;
+}
+
+export { checkIsNavigationAndSidebarRequired, imageInput };
