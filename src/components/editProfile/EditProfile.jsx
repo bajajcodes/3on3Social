@@ -1,5 +1,6 @@
 import { CloseIcon, CameraIcon } from "icons";
 import { Button, FormInput, ProfilePhoto, FormTextArea } from "components";
+import {imageInput} from "utils";
 import { useEditProfile } from "./EditProfile.hook";
 import { useState, useRef } from "react";
 
@@ -10,15 +11,14 @@ function EditProfile({ closeModal, display, info, editProfileFormOpened }) {
   const isFormHasChanges = useRef(false);
   const { validateAndUpdateProfileInfo } = useEditProfile(closeModal, editProfileFormOpened);
 
-  function imageInput(event) {
-    const file = event.target.files[0];
-    const source = URL.createObjectURL(file);
+  function updateProfilePhotoSource(event){
+    const source = imageInput(event);
     setProfilePhotoSource(source);
   }
 
   return (
     <section
-      className={`w-full max-w-lg p-4 bg-white fixed top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 drop-shadow-[4px_4px_12px_black] ${display}`}
+      className={`w-full max-w-lg p-4 bg-white z-50 fixed top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 drop-shadow-[4px_4px_12px_black] ${display}`}
     >
       <form
         onSubmit={(e) => validateAndUpdateProfileInfo(e, isFormHasChanges)}
@@ -51,7 +51,7 @@ function EditProfile({ closeModal, display, info, editProfileFormOpened }) {
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={(e) => imageInput(e)}
+              onChange={(e) => updateProfilePhotoSource(e)}
             />
           </label>
         </ProfilePhoto>
