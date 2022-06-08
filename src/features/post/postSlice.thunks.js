@@ -1,4 +1,3 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "firebaseLocal";
 import {
   doc,
@@ -6,14 +5,21 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const createNewPost = createAsyncThunk(
   "thunk/createNewPost",
-  async (postInfo, { rejectWithValue }) => {
+  async ({ uid, postInfo }, { rejectWithValue }) => {
     try {
       const post = await addDoc(collection(db, "posts"), {
         ...postInfo,
+      });
+      const usersDocRef = doc(db, "users", uid);
+      await updateDoc(usersDocRef, {
+        posts: arrayUnion(post.id),
       });
       return { postId: post.id };
     } catch (error) {
@@ -39,9 +45,13 @@ const updatePost = createAsyncThunk(
 
 const deletePost = createAsyncThunk(
   "thunk/deletePost",
-  async (postId, { rejectWithValue }) => {
+  async ({ uid, postId }, { rejectWithValue }) => {
     try {
       await deleteDoc(doc(db, "posts", postId));
+      const usersDocRef = doc(db, "users", uid);
+      await updateDoc(usersDocRef, {
+        posts: arrayRemove(postId),
+      });
       return { postId: postId };
     } catch (error) {
       return rejectWithValue(error.message ?? "Error Message NA");

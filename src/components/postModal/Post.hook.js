@@ -27,23 +27,27 @@ function usePostModal(editPostModalOpened) {
   }
 
   async function submitPost(content = "", file) {
-    dispatch(updatePostStatus({ status: "updating" }));
-    let imageUrl = "";
-    if (file.size !== 0) {
-      imageUrl = await uploadImage(file, postId, "postImages");
-    }
-    if (postId) {
-      const postInfo =
-        file.size !== 0
-          ? {
-              content,
-              imageUrl,
-            }
-          : { content };
-      dispatch(updatePost({ postId, postInfo }));
-    } else {
-      const postInfo = createPostInfo(uid, imageUrl, content);
-      dispatch(createNewPost(postInfo));
+    try {
+      dispatch(updatePostStatus({ status: "updating" }));
+      let imageUrl = "";
+      if (file.size !== 0) {
+        imageUrl = await uploadImage(file, postId, "postImages");
+      }
+      if (postId) {
+        const postInfo =
+          file.size !== 0
+            ? {
+                content,
+                imageUrl,
+              }
+            : { content };
+        dispatch(updatePost({ postId, postInfo }));
+      } else {
+        const postInfo = createPostInfo(uid, imageUrl, content);
+        dispatch(createNewPost({ uid, postInfo }));
+      }
+    } catch (error) {
+      Toast.error(error.message);
     }
   }
 

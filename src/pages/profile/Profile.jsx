@@ -111,8 +111,9 @@ function Profile() {
   }, []);
 
   useEffect(() => {
-    if (postStatus === "success" && postMessage && postMessage === "Loading") {
-      Toast.info(postMessage);
+    if (postMessage && postMessage !== "Loading") {
+      if (postStatus === "failed") Toast.error(postMessage);
+      else if (postStatus === "success") Toast.success(postMessage);
     }
   }, [postMessage, postStatus]);
 

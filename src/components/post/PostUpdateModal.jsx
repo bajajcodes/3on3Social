@@ -1,6 +1,6 @@
 import { EditIcon, DeleteIcon } from "icons";
 import { openModal, deletePost } from "features";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function PostUpdateModal({
   display,
@@ -9,10 +9,11 @@ function PostUpdateModal({
   postInfo,
 }) {
   const dispatch = useDispatch();
+  const uid = useSelector((state) => state.auth.uid);
 
   function dispatchDeletePost(event) {
     event.stopPropagation();
-    dispatch(deletePost(postId));
+    dispatch(deletePost({ uid, postId }));
     togglePostModalDisplay();
   }
 
