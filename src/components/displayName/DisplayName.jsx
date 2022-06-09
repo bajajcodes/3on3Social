@@ -7,20 +7,12 @@ function DisplayName({
 }) {
   return (
     <div
-      className={`flex ${isRowWise ? "flex-row" : "flex-col"} ${extraClasses}`}
+      className={`flex ${isRowWise ? "flex-row" : "flex-col"} ${extraClasses} ${
+        isBaseSize ? "text-base" : "text-2xl"
+      } `}
     >
-      <h4
-        className={`font-bold ${
-          isBaseSize ? "text-base" : "text-2xl"
-        } text-black text-center `}
-      >
-        {name}
-      </h4>
-      <h4
-        className={`${
-          isBaseSize ? "text-base" : "text-2xl"
-        } text-muted-text text-center`}
-      >
+      <h4 className={"font-bold  text-black "}>{name}</h4>
+      <h4 className={" text-muted-text"}>
         <span>@</span>
         {username}
       </h4>

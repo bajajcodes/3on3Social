@@ -1,4 +1,4 @@
-import { getDate } from "./Profile.helpers";
+import { getDate } from "utils";
 import {
   Button,
   DisplayName,
@@ -9,14 +9,9 @@ import {
 } from "components";
 import { Toast } from "utils";
 import { db } from "firebaseLocal";
-import {
-  updateProfileState,
-  updatePostStatus,
-  updatePostsArray,
-} from "features";
+import { updatePostStatus, updatePostsArray } from "features";
 import {
   collection,
-  doc,
   onSnapshot,
   query,
   orderBy,
@@ -46,34 +41,6 @@ function Profile() {
 
   useEffect(() => {
     dispatch(
-      updateProfileState({
-        status: "loading",
-      })
-    );
-    const unsubscribe = onSnapshot(
-      doc(db, "users", auth.uid),
-      (snapshot) => {
-        dispatch(
-          updateProfileState({
-            status: "success",
-            userInfo: snapshot.data(),
-          })
-        );
-      },
-      (error) => {
-        Toast.error(error.message);
-        dispatch(
-          updateProfileState({
-            status: "failed",
-          })
-        );
-      }
-    );
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    dispatch(
       updatePostStatus({
         status: "loading",
       })
@@ -88,7 +55,11 @@ function Profile() {
       (querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((q) =>
-          posts.push({ ...q.data(), id: q.id, createdAt: getDate(q.data()) })
+          posts.push({
+            ...q.data(),
+            id: q.id,
+            createdAt: getDate(q.data()),
+          })
         );
         dispatch(
           updatePostsArray({
@@ -119,7 +90,7 @@ function Profile() {
 
   return (
     <>
-      <main className="main grid gap-2 p-4 m-auto z-0">
+      <main className="main grid gap-2 p-4 m-auto lg:mx-auto lg:my-0 z-0">
         <section className="w-full max-w-xl grid gap-2 place-items-center text-center">
           {status === "success" && (
             <>
@@ -130,12 +101,12 @@ function Profile() {
                 text="Edit Profile"
                 onClickHandler={showEditProfileModal}
               />
-              {userInfo?.bio && <p className="max-h-">{userInfo.bio}</p>}
+              {userInfo?.bio && <p className="">{userInfo.bio}</p>}
               {userInfo?.website && (
                 <a
                   target="_blank"
                   href={`${userInfo.website}`}
-                  className="text-red-500 hover:underline"
+                  className="text-red-500 hover:underline w-full overflow-hidden text-ellipsis whitespace-nowrap"
                   rel="noreferrer"
                 >
                   {userInfo.website}
@@ -163,10 +134,12 @@ function Profile() {
           </div>
         </section>
         <section className="w-full max-w-xl grid gap-2">
-          {postStatus === "success" && posts.length !== 0 && (
-            <h1 className="text-4xl font-medium">Your Posts</h1>
-          )}
-          {postStatus === "success" && (
+          {postStatus === "success" &&
+            status === "success" &&
+            posts.length !== 0 && (
+              <h1 className="text-4xl font-medium">Your Posts</h1>
+            )}
+          {postStatus === "success" && status === "success" && (
             <section>
               {posts &&
                 posts.map((post) => (

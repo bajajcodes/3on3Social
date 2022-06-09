@@ -21,3 +21,4 @@ export { Emoticon as EmojiIcon } from "./Emoticon";
 export { Photograph as ImageIcon } from "./Photograph";
 export { Edit as EditIcon } from "./Edit";
 export { Delete as DeleteIcon } from "./Delete";
+export { Search as SearchIcon } from "./Search";
