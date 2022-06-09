@@ -9,10 +9,7 @@ import {
 } from "components";
 import { Toast } from "utils";
 import { db } from "firebaseLocal";
-import {
-  updatePostStatus,
-  updatePostsArray,
-} from "features";
+import { updatePostStatus, updatePostsArray } from "features";
 import {
   collection,
   onSnapshot,
@@ -93,7 +90,7 @@ function Profile() {
 
   return (
     <>
-      <main className="main grid grid-rows-[512px_1fr]  gap-2 p-4 m-auto lg:mx-auto lg:my-0 z-0">
+      <main className="main grid gap-2 p-4 m-auto lg:mx-auto lg:my-0 z-0">
         <section className="w-full max-w-xl grid gap-2 place-items-center text-center">
           {status === "success" && (
             <>
