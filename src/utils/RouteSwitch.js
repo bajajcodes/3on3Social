@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import { Landing, Home, Profile, People } from "pages";
 import { Signup, Login } from "features";
 import { CheckAuth } from "./CheckAuth";
-import { RequiresAuth } from "./RequiresAuth";
 
 function RouteSwitch() {
   return (
@@ -25,22 +24,8 @@ function RouteSwitch() {
           </CheckAuth>
         }
       />
-      <Route
-        path="/profile"
-        element={
-          <RequiresAuth>
-            <Profile />
-          </RequiresAuth>
-        }
-      />
-      <Route
-        path="/people"
-        element={
-          <RequiresAuth>
-            <People />
-          </RequiresAuth>
-        }
-      />
+      <Route path="/profile/:uid" element={<Profile />} />
+      <Route path="/people" element={<People />} />
       <Route path="*" element={<div className="main">Not Found</div>} />
     </Routes>
   );

@@ -1,6 +1,10 @@
+import {
+  EditProfileButton,
+  FollowButton,
+  UnfollowButton,
+} from "./Profile.buttons";
 import { getDate } from "utils";
 import {
-  Button,
   DisplayName,
   ProfilePhoto,
   EditProfileModal,
@@ -9,27 +13,30 @@ import {
 } from "components";
 import { Toast } from "utils";
 import { db } from "firebaseLocal";
-import { updatePostStatus, updatePostsArray } from "features";
 import {
+  doc,
   collection,
   onSnapshot,
   query,
   orderBy,
   where,
 } from "firebase/firestore";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Profile() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const uid = useSelector((state) => state.auth.uid);
+  const profileUid = location.pathname.split("/")[2];
+  const following =
+    useSelector((state) => state.profile.userInfo?.following) ?? [];
   const [displayEditProfileModal, setDisplayEditProfileModal] = useState(false);
-  const auth = useSelector((state) => state.auth);
-  const { status, userInfo } = useSelector((state) => state.profile);
-  const {
-    status: postStatus,
-    posts,
-    message: postMessage,
-  } = useSelector((state) => state.post);
-  const dispatch = useDispatch();
+  const [userInfoStatus, setUserInfoStatus] = useState("idle");
+  const [userInfo, setUserInfo] = useState({});
+  const [posts, setPosts] = useState([]);
+  const [postStatus, setPostStatus] = useState("idle");
 
   function showEditProfileModal() {
     setDisplayEditProfileModal(true);
@@ -39,15 +46,56 @@ function Profile() {
     setDisplayEditProfileModal(false);
   }
 
+  function followUser() {
+    if (uid) {
+      // * Will be removed post follow/unfollow code addition
+      console.log("Followed");
+    } else {
+      navigate("/login", { state: { from: `/profile/${profileUid}` } });
+    }
+  }
+
+  function unfollowUser() {
+    if (uid) {
+      // * Will be removed post follow/unfollow code addition
+      console.log("unfollowing");
+    } else {
+      navigate("/login", { state: { from: `/profile/${profileUid}` } });
+    }
+  }
+
   useEffect(() => {
-    dispatch(
-      updatePostStatus({
-        status: "loading",
-      })
+    const uid = location.pathname.split("/")[2];
+    setUserInfoStatus("loading");
+    const unsubscribe = onSnapshot(
+      doc(db, "users", uid),
+      (snapshot) => {
+        setUserInfoStatus("success");
+        const userInfo = {
+          ...snapshot.data(),
+          createdAt: getDate(snapshot.data()),
+          uid: snapshot.id,
+        };
+        setUserInfo(userInfo);
+      },
+      (error) => {
+        Toast.error(error.message);
+        setUserInfoStatus("failed");
+      }
     );
+    return () => {
+      unsubscribe();
+      setUserInfoStatus("idle");
+      setUserInfo({});
+    };
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const uid = location.pathname.split("/")[2];
+    setPostStatus("loading");
     const userPostsQuery = query(
       collection(db, "posts"),
-      where("userId", "==", auth.uid),
+      where("userId", "==", uid),
       orderBy("createdAt", "desc")
     );
     const unsubscribe = onSnapshot(
@@ -61,85 +109,89 @@ function Profile() {
             createdAt: getDate(q.data()),
           })
         );
-        dispatch(
-          updatePostsArray({
-            status: "success",
-            posts,
-          })
-        );
+        setPosts(posts);
+        setPostStatus("success");
       },
       (error) => {
         Toast.error(error.message);
-        dispatch(
-          updatePostsArray({
-            status: "failed",
-            posts: [],
-          })
-        );
+        setPostStatus("failed");
       }
     );
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    if (postMessage && postMessage !== "Loading") {
-      if (postStatus === "failed") Toast.error(postMessage);
-      else if (postStatus === "success") Toast.success(postMessage);
-    }
-  }, [postMessage, postStatus]);
+    return () => {
+      unsubscribe();
+      setPostStatus("idle");
+      setPosts([]);
+    };
+  }, [location.pathname]);
 
   return (
     <>
       <main className="main grid gap-2 p-4 m-auto lg:mx-auto lg:my-0 z-0">
-        <section className="w-full max-w-xl grid gap-2 place-items-center text-center">
-          {status === "success" && (
-            <>
-              <ProfilePhoto source={userInfo.profileImageUrl} isLarge={true} />
-              <DisplayName name={userInfo.name} username={userInfo.username} />
-              <Button
-                name="editProfile"
-                text="Edit Profile"
-                onClickHandler={showEditProfileModal}
-              />
-              {userInfo?.bio && <p className="">{userInfo.bio}</p>}
-              {userInfo?.website && (
-                <a
-                  target="_blank"
-                  href={`${userInfo.website}`}
-                  className="text-red-500 hover:underline w-full overflow-hidden text-ellipsis whitespace-nowrap"
-                  rel="noreferrer"
-                >
-                  {userInfo.website}
-                </a>
-              )}
-              <section className="w-full max-w-lg h-max text-2xl bg-white px-2 py-1 grid gap-4 place-items-center place-content-center lg:grid-cols-3 lg:h-[7.5rem]">
-                <div>
-                  <h4 className="font-bold">{userInfo.following.length}</h4>
-                  <h4>Following</h4>
-                </div>
-                <div>
-                  <h4 className="font-bold">{userInfo.posts.length}</h4>
-                  <h4>Posts</h4>
-                </div>
-                <div>
-                  <h4 className="font-bold">{userInfo.followers.length}</h4>
-                  <h4>Followers</h4>
-                </div>
-              </section>
-            </>
-          )}
+        <section className="w-full max-w-xl lg:w-[36rem] grid gap-2 place-items-center text-center">
+          {userInfoStatus === "success" &&
+            postStatus === "success" &&
+            userInfo?.username && (
+              <>
+                <ProfilePhoto
+                  source={userInfo.profileImageUrl}
+                  isLarge={true}
+                />
+                <DisplayName
+                  name={userInfo.name}
+                  username={userInfo.username}
+                />
+                {uid === userInfo.uid && (
+                  <EditProfileButton onClickHandler={showEditProfileModal} />
+                )}
+                {uid !== userInfo.uid &&
+                  following.indexOf(userInfo.uid) === -1 && (
+                    <FollowButton onClickHandler={followUser} />
+                  )}
+                {uid !== userInfo.uid &&
+                  following.indexOf(userInfo.uid) !== -1 && (
+                    <UnfollowButton onClickHandler={unfollowUser} />
+                  )}
+                {userInfo?.bio && <p className="">{userInfo.bio}</p>}
+                {userInfo?.website && (
+                  <a
+                    target="_blank"
+                    href={`${userInfo.website}`}
+                    className="text-red-500 hover:underline w-full overflow-hidden text-ellipsis whitespace-nowrap"
+                    rel="noreferrer"
+                  >
+                    {userInfo.website}
+                  </a>
+                )}
+                <section className="w-full max-w-lg h-max text-2xl bg-white px-2 py-1 grid gap-4 place-items-center place-content-center lg:grid-cols-3 lg:h-[7.5rem]">
+                  <div>
+                    <h4 className="font-bold">{userInfo.following.length}</h4>
+                    <h4>Following</h4>
+                  </div>
+                  <div>
+                    <h4 className="font-bold">{userInfo.posts.length}</h4>
+                    <h4>Posts</h4>
+                  </div>
+                  <div>
+                    <h4 className="font-bold">{userInfo.followers.length}</h4>
+                    <h4>Followers</h4>
+                  </div>
+                </section>
+              </>
+            )}
 
           <div className="relative">
-            {status === "loading" && <Loader message="Profile Loading..." />}
+            {(userInfoStatus === "loading" || postStatus === "loading") && (
+              <Loader message="Profile Loading..." />
+            )}
           </div>
         </section>
-        <section className="w-full max-w-xl grid gap-2">
+        <section className="w-full max-w-xl lg:w-[36rem] grid gap-2">
           {postStatus === "success" &&
-            status === "success" &&
+            userInfoStatus === "success" &&
             posts.length !== 0 && (
               <h1 className="text-4xl font-medium">Your Posts</h1>
             )}
-          {postStatus === "success" && status === "success" && (
+          {postStatus === "success" && userInfoStatus === "success" && (
             <section>
               {posts &&
                 posts.map((post) => (
@@ -153,6 +205,7 @@ function Profile() {
                       createdAt: post.createdAt,
                       content: post.content,
                       id: post.id,
+                      uid,
                     }}
                   />
                 ))}
