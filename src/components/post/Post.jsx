@@ -9,12 +9,18 @@ import {
   BookmarksIcon,
 } from "icons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Post({ postInfo }) {
   const [updatePostModalDisplay, setUpdatePostModalDisplay] = useState("");
+  const navigate = useNavigate();
 
   function togglePostModalDisplay() {
     setUpdatePostModalDisplay((p) => (p === "block" ? "hidden" : "block"));
+  }
+
+  function onClickHandler() {
+    navigate(`/profile/${postInfo.uid}`);
   }
 
   return (
@@ -22,6 +28,7 @@ function Post({ postInfo }) {
       <ProfilePhoto
         extraClasses="lg:w-16 lg:h-16"
         source={postInfo.profileImageUrl}
+        onClickHandler={() => onClickHandler()}
       />
       <div>
         <div className="w-full flex flex-wrap place-items-center gap-2">
@@ -30,6 +37,7 @@ function Post({ postInfo }) {
             username={postInfo.username}
             isBaseSize
             extraClasses="lg:flex-row"
+            onClickHandler={() => onClickHandler()}
           />
           <span>
             <span className="text-xl font-bold">·</span>
