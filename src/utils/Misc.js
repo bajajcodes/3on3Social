@@ -39,17 +39,30 @@ function getDate(info) {
 
 function getPeoples(username, setPeoples, isLimited = false) {
   let usersQuery = null;
-  if (isLimited) {
-    usersQuery = query(
-      collection(db, "users"),
-      where("username", "!=", username),
-      limit(4)
-    );
-  } else {
-    usersQuery = query(
-      collection(db, "users"),
-      where("username", "!=", username)
-    );
+  if(username){
+    if (isLimited) {
+      usersQuery = query(
+        collection(db, "users"),
+        where("username", "!=", username),
+        limit(4)
+      );
+    } else {
+      usersQuery = query(
+        collection(db, "users"),
+        where("username", "!=", username)
+      );
+    }
+  }else{
+    if(isLimited){
+      usersQuery = query(
+        collection(db, "users"),
+        limit(4)
+      );
+    }else{
+      usersQuery = query(
+        collection(db, "users"),
+      );
+    }
   }
 
   return onSnapshot(usersQuery, (snapshot) => {
