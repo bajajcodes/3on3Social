@@ -20,6 +20,9 @@ import { doc, onSnapshot } from "firebase/firestore";
 function App() {
   const { uid, isLoggedIn } = useSelector((state) => state.auth);
   const { show } = useSelector((state) => state.postModal);
+  const { status: postStatus, message: postMessage } = useSelector(
+    (state) => state.post
+  );
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -36,7 +39,6 @@ function App() {
     });
     return unsubscribe;
   }, []);
-
 
   useEffect(() => {
     let unsubscribe = null;
@@ -68,9 +70,16 @@ function App() {
           );
         }
       );
-    } 
+    }
     return () => unsubscribe && unsubscribe();
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (postMessage && postMessage !== "Loading") {
+      if (postStatus === "failed") Toast.error(postMessage);
+      else if (postStatus === "success") Toast.success(postMessage);
+    }
+  }, [postMessage, postStatus]);
 
   return (
     <div
