@@ -23,6 +23,9 @@ function App() {
   const { status: postStatus, message: postMessage } = useSelector(
     (state) => state.post
   );
+  const { status: profileStatus, message: profileMessage } = useSelector(
+    (state) => state.profile
+  );
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -37,7 +40,7 @@ function App() {
         Toast.success("Successful Authenticated");
       }
     });
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -57,6 +60,7 @@ function App() {
               userInfo: {
                 ...snapshot.data(),
                 createdAt: getDate(snapshot.data()),
+                uid,
               },
             })
           );
@@ -80,6 +84,12 @@ function App() {
       else if (postStatus === "success") Toast.success(postMessage);
     }
   }, [postMessage, postStatus]);
+
+  useEffect(() => {
+    if (profileStatus === "failed") {
+      Toast.error(profileMessage);
+    }
+  }, [profileMessage, profileStatus]);
 
   return (
     <div

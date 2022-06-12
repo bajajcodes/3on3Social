@@ -12,7 +12,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const createNewPost = createAsyncThunk(
   "thunk/createNewPost",
-  async ({ uid, postInfo }, { rejectWithValue }) => {
+  async ({ uid,postInfo }, { rejectWithValue }) => {
     try {
       const post = await addDoc(collection(db, "posts"), {
         ...postInfo,
@@ -45,7 +45,7 @@ const updatePost = createAsyncThunk(
 
 const deletePost = createAsyncThunk(
   "thunk/deletePost",
-  async ({ uid, postId }, { rejectWithValue }) => {
+  async ({uid,postId }, { rejectWithValue }) => {
     try {
       await deleteDoc(doc(db, "posts", postId));
       const usersDocRef = doc(db, "users", uid);

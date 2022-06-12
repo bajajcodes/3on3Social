@@ -1,19 +1,25 @@
 import { getTextAccordingToCursorPosition } from "./FormTextArea.helpers";
 import { useState, useEffect } from "react";
 
-function FormTextArea({ info, extraClasses = "", mergeWithInputValue = "" }) {
+function FormTextArea({
+  info,
+  extraClasses = "",
+  mergeWithInputValue = "",
+  updateParentInputValue,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [selectionStart, setSelectionStart] = useState(0);
 
   function onChangeHandler(event) {
     let value = event.target.value;
     setInputValue(value);
+    if (updateParentInputValue) {
+      updateParentInputValue(value);
+    }
   }
 
   useEffect(() => {
-    if (info.value) {
-      setInputValue(info.value);
-    }
+    setInputValue(info.value);
   }, [info.value]);
 
   useEffect(() => {

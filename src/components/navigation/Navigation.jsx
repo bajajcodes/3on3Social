@@ -11,11 +11,11 @@ function Navigation() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  function createNewPostHandler(){
-    if(uid === null){
+  function createNewPostHandler() {
+    if (uid === null) {
       navigate("/login");
-    }else{
-      dispatch(openModal())
+    } else {
+      dispatch(openModal());
     }
   }
 

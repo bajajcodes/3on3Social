@@ -9,6 +9,8 @@ export {
 export {
   profileReducer,
   updatedUserProfile,
+  followUser,
+  unFollowUser,
   updateProfileState,
 } from "./profile";
 export {

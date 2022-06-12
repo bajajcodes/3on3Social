@@ -1,4 +1,8 @@
-import { updatedUserProfile } from "./profileSlice.thunks";
+import {
+  updatedUserProfile,
+  followUser,
+  unFollowUser,
+} from "./profileSlice.thunks";
 import { thunkLoading } from "features/thunks.helpers";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -6,6 +10,7 @@ const name = "profile";
 const initialState = {
   status: "idle",
   userInfo: {},
+  message: "",
 };
 
 const profileSlice = createSlice({
@@ -28,6 +33,34 @@ const profileSlice = createSlice({
     },
     [updatedUserProfile.rejected]: (state) => {
       state.status = "failed";
+    },
+    [followUser.pending]: (state) => {
+      thunkLoading(state);
+    },
+    [followUser.fulfilled]: (state) => {
+      state.status = "success";
+    },
+    [followUser.rejected]: (state,action) => {
+      state.status = "failed";
+      if (action.payload) {
+        state.message = action.payload;
+      } else {
+        state.message = action.error.message;
+      }
+    },
+    [unFollowUser.pending]: (state) => {
+      thunkLoading(state);
+    },
+    [unFollowUser.fulfilled]: (state) => {
+      state.status = "success";
+    },
+    [unFollowUser.rejected]: (state, action) => {
+      state.status = "failed";
+      if (action.payload) {
+        state.message = action.payload;
+      } else {
+        state.message = action.error.message;
+      }
     },
   },
 });

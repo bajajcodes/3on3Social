@@ -45,11 +45,9 @@ function Login() {
   function fillGuestCredentials(event) {
     try {
       event.stopPropagation();
-      setEmailInputValue("guestuser@anon.in");
-      setPasswordInputValue("guestuser");
-      dispatch(
-        loginUser({ email: "guestuser@anon.in", password: "guestuser" })
-      );
+      setEmailInputValue("guruji@india.in");
+      setPasswordInputValue("gurujiin");
+      dispatch(loginUser({ email: "guruji@india.in", password: "gurujiin" }));
     } catch (error) {
       SetFormErrorMessage(error.message);
     }

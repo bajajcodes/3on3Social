@@ -1,23 +1,21 @@
-import { ProfilePhoto } from "../profilePhoto/ProfilePhoto";
-import { FormTextArea } from "../formTextArea/FormTextArea";
-import { Button } from "../button/Button";
+import { usePostModal } from "../../components/postModal/Post.hook";
+import { ProfilePhoto, FormTextArea, Button } from "components";
 import { ImageIcon, GifIcon, EmojiIcon } from "icons";
-import { usePostModal } from "./Post.hook";
 import { imageInput } from "utils";
 import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import Picker, { SKIN_TONE_LIGHT } from "emoji-picker-react";
 
-function Post({ editPostModalOpened }) {
+function Post() {
   const profileImageUrl = useSelector(
     (state) => state.profile.userInfo.profileImageUrl
   );
-  const { display, info } = useSelector((state) => state.postModal);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [mergeWithInputValue, setMergeWithInputValue] = useState("");
-  const [imageUrlSource, setImageUrlSource] = useState(info.imageUrl);
+  const [imageUrlSource, setImageUrlSource] = useState("");
+  const [contentValue, setContentValue] = useState("");
   const isFormHasChanges = useRef(false);
-  const { validateAndCreateNewPost } = usePostModal(editPostModalOpened);
+  const { validateAndCreateNewPost } = usePostModal();
 
   function onEmojiClick(event, emojiObject) {
     event.stopPropagation();
@@ -30,14 +28,26 @@ function Post({ editPostModalOpened }) {
     setImageUrlSource(source);
   }
 
+  function clearInputs() {
+    setShowEmojiPicker(false);
+    setMergeWithInputValue("");
+    setImageUrlSource("");
+    setContentValue("");
+  }
+
   return (
     <section
-      className={`p-4 bg-white w-full max-w-xl lg:w-[36rem] z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[4px_4px_12px_black] grid grid-cols-[max-content_1fr] gap-2 ${display}`}
+      className={
+        "p-4 bg-white w-full max-w-xl grid grid-cols-[max-content_1fr] gap-2"
+      }
     >
       <ProfilePhoto isMedium source={profileImageUrl} />
       <form
         className="grid gap-2"
-        onSubmit={(e) => validateAndCreateNewPost(e, isFormHasChanges)}
+        onSubmit={(e) => {
+          clearInputs();
+          validateAndCreateNewPost(e, isFormHasChanges);
+        }}
         onChange={() => (isFormHasChanges.current = true)}
       >
         <FormTextArea
@@ -49,9 +59,10 @@ function Post({ editPostModalOpened }) {
             maxLength: "200",
             type: "text",
             extraClasses: "bg-primary-background",
-            value: info?.content ?? "",
+            value: contentValue,
           }}
           mergeWithInputValue={mergeWithInputValue}
+          updateParentInputValue={(value) => setContentValue(value)}
         />
         {imageUrlSource && (
           <img src={imageUrlSource} className="m-auto max-h-96" />
@@ -72,7 +83,11 @@ function Post({ editPostModalOpened }) {
             <span role="button">
               <GifIcon />
             </span>
-            <span role="button" onClick={() => setShowEmojiPicker((p) => !p)}>
+            <span
+              role="button"
+              onClick={() => setShowEmojiPicker((p) => !p)}
+              className="relative"
+            >
               <EmojiIcon />
               {showEmojiPicker && (
                 <Picker
@@ -82,9 +97,9 @@ function Post({ editPostModalOpened }) {
                   pickerStyle={{
                     width: "228px",
                     height: "228px",
-                    position: "fixed",
+                    position: "absolute",
                     left: "5%",
-                    top: "40%",
+                    top: "0",
                   }}
                 />
               )}
@@ -92,7 +107,7 @@ function Post({ editPostModalOpened }) {
           </div>
           <Button
             name="postContent"
-            text={info?.content ? "Update" : "Post"}
+            text="Post"
             extraClasses={"ml-auto"}
             isPrimary
           />
