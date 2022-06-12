@@ -12,5 +12,6 @@ export { EditProfileModal } from "./editProfileModal/EditProfileModal";
 export { FormTextArea } from "./formTextArea/FormTextArea";
 export { Loader } from "./loader/Loader";
 export { Post } from "./post/Post";
+export { Post as CreatePost } from "./postModal/Post";
 export { PostModal } from "./postModal/PostModal";
 export { PeopleCards } from "./peopleCards/PeopleCards";

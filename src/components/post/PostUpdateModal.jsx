@@ -9,7 +9,7 @@ function PostUpdateModal({
   postInfo,
 }) {
   const dispatch = useDispatch();
-  const uid = useSelector((state) => state.auth.uid);
+  const uid = useSelector((state) => state.profile.userInfo.uid);
 
   function dispatchDeletePost(event) {
     event.stopPropagation();

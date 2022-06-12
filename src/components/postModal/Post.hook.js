@@ -8,16 +8,20 @@ import {
 import { useFirebase } from "hooks";
 import { serverTimestamp } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function usePostModal(editPostModalOpened) {
   const { uploadImage } = useFirebase();
-  const { uid } = useSelector((state) => state.auth);
+  const { uid, isLoggedIn } = useSelector((state) => state.auth);
+  const username = useSelector((state) => state.profile.userInfo.username);
   const postId = useSelector((state) => state.postModal.postId);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  function createPostInfo(uid, imageUrl, content) {
+  function createPostInfo(username, imageUrl, content) {
     return {
-      userId: uid,
+      username: username,
       comments: [],
       likes: [],
       imageUrl,
@@ -43,7 +47,7 @@ function usePostModal(editPostModalOpened) {
             : { content };
         dispatch(updatePost({ postId, postInfo }));
       } else {
-        const postInfo = createPostInfo(uid, imageUrl, content);
+        const postInfo = createPostInfo(username, imageUrl, content);
         dispatch(createNewPost({ uid, postInfo }));
       }
     } catch (error) {
@@ -55,6 +59,9 @@ function usePostModal(editPostModalOpened) {
     try {
       event.stopPropagation();
       event.preventDefault();
+      if (!isLoggedIn) {
+        navigate("/login", { state: { from: location.pathname } });
+      }
       if (isFormHasChanges.current) {
         const formData = new FormData(event.target);
         const content = formData.get("content");
@@ -62,7 +69,9 @@ function usePostModal(editPostModalOpened) {
         if (formData.has("file")) {
           file = formData.get("file");
         }
-        editPostModalOpened();
+        if(editPostModalOpened){
+          editPostModalOpened();
+        }
         await submitPost(content, file);
       }
       dispatch(closeModal());

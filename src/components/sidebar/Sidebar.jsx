@@ -12,7 +12,12 @@ function Sidebar() {
   const [peoples, setPeoples] = useState([]);
 
   useEffect(() => {
-    let unsubscribe = getPeoples(userInfo?.username, setPeoples, true);
+    let unsubscribe = getPeoples(
+      userInfo?.username,
+      userInfo?.following,
+      setPeoples,
+      true
+    );
     return () => unsubscribe();
   }, [userInfo]);
 

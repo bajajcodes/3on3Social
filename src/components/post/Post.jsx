@@ -1,23 +1,13 @@
+import { UpdatePostButton } from "./UpdatePostButton";
 import { ProfilePhoto } from "../profilePhoto/ProfilePhoto";
 import { DisplayName } from "../displayName/DisplayName";
-import { PostUpdateModal } from "./PostUpdateModal";
-import {
-  EllipseIcon,
-  LikeIcon,
-  CommentIcon,
-  ShareIcon,
-  BookmarksIcon,
-} from "icons";
-import { useState } from "react";
+import { LikeIcon, CommentIcon, ShareIcon, BookmarksIcon } from "icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Post({ postInfo }) {
-  const [updatePostModalDisplay, setUpdatePostModalDisplay] = useState("");
   const navigate = useNavigate();
-
-  function togglePostModalDisplay() {
-    setUpdatePostModalDisplay((p) => (p === "block" ? "hidden" : "block"));
-  }
+  const uid = useSelector((state) => state.auth?.uid);
 
   function onClickHandler() {
     navigate(`/profile/${postInfo.uid}`);
@@ -43,26 +33,17 @@ function Post({ postInfo }) {
             <span className="text-xl font-bold">·</span>
             <span>{postInfo.createdAt}</span>
           </span>
-          <button
-            className="ml-auto relative z-0"
-            onClick={() => togglePostModalDisplay()}
-          >
-            <EllipseIcon />
-            {updatePostModalDisplay && (
-              <PostUpdateModal
-                display={updatePostModalDisplay}
-                togglePostModalDisplay={togglePostModalDisplay}
-                postId={postInfo.id}
-                postInfo={postInfo}
-              />
-            )}
-          </button>
+          {uid === postInfo.uid && <UpdatePostButton postInfo={postInfo} />}
         </div>
         <pre className="text-base whitespace-pre-line break-words pre-formatting">
           {postInfo.content}
         </pre>
         {postInfo.imageUrl && (
-          <img src={postInfo.imageUrl} className="h-52 m-auto" />
+          <img
+            src={postInfo.imageUrl}
+            className="m-auto max-h-96"
+            loading="eager"
+          />
         )}
         <div className="flex flex-wrap place-items-center justify-between mt-2">
           <button>

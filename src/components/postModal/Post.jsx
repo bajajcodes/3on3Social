@@ -32,7 +32,7 @@ function Post({ editPostModalOpened }) {
 
   return (
     <section
-      className={`p-4 bg-white w-full max-w-xl grid grid-cols-[max-content_1fr] gap-2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 drop-shadow-[4px_4px_12px_black] ${display}`}
+      className={`p-4 bg-white w-full max-w-xl lg:w-[36rem] z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[4px_4px_12px_black] grid grid-cols-[max-content_1fr] gap-2 ${display}`}
     >
       <ProfilePhoto isMedium source={profileImageUrl} />
       <form
@@ -53,7 +53,9 @@ function Post({ editPostModalOpened }) {
           }}
           mergeWithInputValue={mergeWithInputValue}
         />
-        {imageUrlSource && <img src={imageUrlSource} className="m-auto " />}
+        {imageUrlSource && (
+          <img src={imageUrlSource} className="m-auto max-h-96" />
+        )}
         <div className="flex place-items-center">
           <div className="grid grid-cols-3 gap-2">
             <label role="button" htmlFor="file">
