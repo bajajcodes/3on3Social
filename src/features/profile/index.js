@@ -1,2 +1,6 @@
 export { profileReducer, updateProfileState } from "./profileSlice";
-export { updatedUserProfile } from "./profileSlice.thunks";
+export {
+  updatedUserProfile,
+  followUser,
+  unFollowUser,
+} from "./profileSlice.thunks";
