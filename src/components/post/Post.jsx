@@ -2,6 +2,7 @@ import { UpdatePostButton } from "./UpdatePostButton";
 import { ProfilePhoto } from "../profilePhoto/ProfilePhoto";
 import { DisplayName } from "../displayName/DisplayName";
 import { LikeIcon, CommentIcon, ShareIcon, BookmarksIcon } from "icons";
+import { parseDateToDMY } from "utils";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -31,7 +32,7 @@ function Post({ postInfo }) {
           />
           <span>
             <span className="text-xl font-bold">·</span>
-            <span>{postInfo.createdAt}</span>
+            <span>{parseDateToDMY(postInfo.createdAt)}</span>
           </span>
           {uid === postInfo.uid && <UpdatePostButton postInfo={postInfo} />}
         </div>
