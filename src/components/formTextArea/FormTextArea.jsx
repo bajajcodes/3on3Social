@@ -19,10 +19,7 @@ function FormTextArea({
   }
 
   useEffect(() => {
-    const isExists = info?.value ?? false;
-    if (isExists) {
-      setInputValue(info.value);
-    }
+    setInputValue(info.value);
   }, [info.value]);
 
   useEffect(() => {

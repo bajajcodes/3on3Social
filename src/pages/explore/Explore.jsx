@@ -10,7 +10,7 @@ function Explore() {
   return (
     <main className="main max-w-xl grid gap-2 p-4 m-auto lg:mx-auto lg:my-0 z-0">
       {status === "loading" && (
-        <div className="z-50 w-100 h-100 bg-fill-background fixed top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[4px_4px_12px_black]">
+        <div className="z-50 w-100 h-100 bg-fill-background fixed top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <Loader message="Posts Loading..." />
         </div>
       )}
