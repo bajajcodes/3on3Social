@@ -8,8 +8,12 @@ function People() {
   const [peoples, setPeoples] = useState([]);
 
   useEffect(() => {
-    let unsubscribe = getPeoples(userInfo?.username, setPeoples);
-    return () => unsubscribe()
+    let unsubscribe = getPeoples(
+      userInfo?.username,
+      userInfo?.following,
+      setPeoples
+    );
+    return () => unsubscribe();
   }, [userInfo]);
 
   return (
