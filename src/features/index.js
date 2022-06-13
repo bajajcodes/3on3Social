@@ -22,3 +22,4 @@ export {
   updatePostsArray,
 } from "./post";
 export { postModalReducer, openModal, closeModal } from "./postModal";
+export * from "./comment";

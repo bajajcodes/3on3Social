@@ -29,6 +29,7 @@ function Home() {
                     username: post.username,
                     createdAt: post.createdAt,
                     content: post.content,
+                    comments:post.comments,
                     id: post.id,
                     uid: post.uid,
                   }}
@@ -42,7 +43,7 @@ function Home() {
           </>
         )}
         {status === "loading" && (
-          <div className="relative flex place-items-center mt-8">
+          <div className="relative flex place-items-center mt-8 top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <Loader message="Posts Loading..." />
           </div>
         )}

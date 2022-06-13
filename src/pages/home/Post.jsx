@@ -45,8 +45,7 @@ function Post() {
       <form
         className="grid gap-2"
         onSubmit={(e) => {
-          clearInputs();
-          validateAndCreateNewPost(e, isFormHasChanges);
+          validateAndCreateNewPost(e, isFormHasChanges, clearInputs);
         }}
         onChange={() => (isFormHasChanges.current = true)}
       >

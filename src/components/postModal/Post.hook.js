@@ -55,7 +55,7 @@ function usePostModal(editPostModalOpened) {
     }
   }
 
-  async function validateAndCreateNewPost(event, isFormHasChanges) {
+  async function validateAndCreateNewPost(event, isFormHasChanges, clearInputs) {
     try {
       event.stopPropagation();
       event.preventDefault();
@@ -74,6 +74,8 @@ function usePostModal(editPostModalOpened) {
         }
         await submitPost(content, file);
       }
+      clearInputs();
+      event.target.reset();
       dispatch(closeModal());
     } catch (error) {
       Toast.error(error.message);

@@ -1,4 +1,4 @@
-import { getDate, Toast } from "utils";
+import { getDate, Toast, filterPosts } from "utils";
 import { db } from "firebaseLocal";
 import {
   doc,
@@ -19,7 +19,11 @@ function useProfile() {
   const [displayEditProfileModal, setDisplayEditProfileModal] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [postsWithComments, setPostsWithComments] = useState([]);
   const [postStatus, setPostStatus] = useState("idle");
+  const [status, setStatus] = useState("loading");
+  const [commentsStatus, setCommentsStatus] = useState("idle");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const uid = useSelector((state) => state.auth.uid);
@@ -68,13 +72,13 @@ function useProfile() {
         userPostsQuery,
         (querySnapshot) => {
           const posts = [];
-          querySnapshot.forEach((q) =>
+          querySnapshot.forEach((q) => {
             posts.push({
               ...q.data(),
               id: q.id,
               createdAt: getDate(q.data()),
-            })
-          );
+            });
+          });
           setPosts(posts);
           setPostStatus("success");
         },
@@ -93,6 +97,61 @@ function useProfile() {
       }
     };
   }, [userInfoStatus]);
+
+  useEffect(() => {
+    setCommentsStatus("loading");
+    let unsubscribe = null;
+    if (userInfoStatus === "success") {
+      const userCommentsQuery = query(collection(db, "comments"));
+      unsubscribe = onSnapshot(
+        userCommentsQuery,
+        (querySnapshot) => {
+          const comments = [];
+          querySnapshot.forEach((q) =>
+            comments.push({
+              ...q.data(),
+              id: q.id,
+              createdAt: getDate(q.data()),
+            })
+          );
+          setComments(comments);
+          setCommentsStatus("success");
+        },
+        (error) => {
+          Toast.error(error.message);
+          setCommentsStatus("failed");
+        }
+      );
+    }
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+        setCommentsStatus("idle");
+        setComments([]);
+      }
+    };
+  }, [userInfoStatus]);
+
+  useEffect(() => {
+    if (
+      userInfoStatus === "success" &&
+      postStatus === "success" &&
+      commentsStatus === "success"
+    ) {
+      const postsWithComments = posts.map((post) => {
+        const filteredComments = comments.filter(
+          (comment) => comment.postId === post.id
+        );
+        const sortedComments = filterPosts("Newest", filteredComments);
+        return {
+          ...post,
+          comments: sortedComments,
+        };
+      });
+      setPostsWithComments(postsWithComments);
+      setStatus("success");
+    }
+  }, [userInfoStatus, postStatus, commentsStatus, userInfo, posts, comments]);
 
   function dispatchFollowUser() {
     if (uid) {
@@ -132,14 +191,13 @@ function useProfile() {
     uid,
     following,
     userInfo,
-    userInfoStatus,
-    posts,
-    postStatus,
+    posts: postsWithComments,
+    status,
     dispatchFollowUser,
     dispatchUnfollowUser,
     displayEditProfileModal,
     showEditProfileModal,
-    setDisplayEditProfileModalToInitialState
+    setDisplayEditProfileModalToInitialState,
   };
 }
 

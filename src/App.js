@@ -5,23 +5,25 @@ import {
   RouteSwitch,
   Toast,
   getDate,
+  showToastOnFailedAndSuccessStatus,
 } from "utils";
-import { loggedIn } from "features";
-import { auth } from "firebaseLocal";
+import { loggedIn, updateProfileState } from "features";
+import { auth,db } from "firebaseLocal";
+import { doc,onSnapshot, } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { db } from "firebaseLocal";
-import { updateProfileState } from "features";
-import { doc, onSnapshot } from "firebase/firestore";
 
 function App() {
   const { uid, isLoggedIn } = useSelector((state) => state.auth);
   const { show } = useSelector((state) => state.postModal);
   const { status: postStatus, message: postMessage } = useSelector(
     (state) => state.post
+  );
+  const { status: commentStatus, message: commentMessage } = useSelector(
+    (state) => state.comment
   );
   const { status: profileStatus, message: profileMessage } = useSelector(
     (state) => state.profile
@@ -79,17 +81,20 @@ function App() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (postMessage && postMessage !== "Loading") {
-      if (postStatus === "failed") Toast.error(postMessage);
-      else if (postStatus === "success") Toast.success(postMessage);
-    }
+    showToastOnFailedAndSuccessStatus(postStatus, postMessage);
   }, [postMessage, postStatus]);
 
   useEffect(() => {
-    if (profileStatus === "failed") {
-      Toast.error(profileMessage);
-    }
+    showToastOnFailedAndSuccessStatus(profileStatus, profileMessage);
   }, [profileMessage, profileStatus]);
+
+  useEffect(() => {
+    showToastOnFailedAndSuccessStatus(commentStatus, commentMessage);
+  }, [commentMessage, commentStatus]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <div

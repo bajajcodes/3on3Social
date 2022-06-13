@@ -3,6 +3,7 @@ import {
   profileReducer,
   postReducer,
   postModalReducer,
+  commentReducer,
 } from "features";
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -12,6 +13,7 @@ const store = configureStore({
     profile: profileReducer,
     post: postReducer,
     postModal: postModalReducer,
+    comment: commentReducer,
   },
 });
 

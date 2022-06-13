@@ -5,7 +5,7 @@ function Close({ onClickFunc }) {
       className="h-5 w-5 hover:scale-110 cursor-pointer"
       viewBox="0 0 20 20"
       fill="currentColor"
-      onClick={() => onClickFunc()}
+      onClick={(e) => onClickFunc(e)}
     >
       <path
         fillRule="evenodd"
