@@ -46,6 +46,7 @@ function Explore() {
                   content: post.content,
                   comments: post.comments,
                   likes: post.likes,
+                  bookmarks: post.bookmarks,
                   id: post.id,
                   uid: post.uid,
                 }}

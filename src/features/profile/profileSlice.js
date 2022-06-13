@@ -39,8 +39,9 @@ const profileSlice = createSlice({
     },
     [followUser.fulfilled]: (state) => {
       state.status = "success";
+      state.message = "User Followed";
     },
-    [followUser.rejected]: (state,action) => {
+    [followUser.rejected]: (state, action) => {
       state.status = "failed";
       if (action.payload) {
         state.message = action.payload;
@@ -53,6 +54,7 @@ const profileSlice = createSlice({
     },
     [unFollowUser.fulfilled]: (state) => {
       state.status = "success";
+      state.message = "User Unfollow-ed";
     },
     [unFollowUser.rejected]: (state, action) => {
       state.status = "failed";

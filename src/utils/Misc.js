@@ -14,7 +14,7 @@ function imageInput(event) {
 }
 
 function showToastOnFailedAndSuccessStatus(status, message) {
-  if (status !== "loading" && message) {
+  if (status !== "loading" && message !== "Loading" && message.length > 0) {
     if (status === "failed") Toast.error(message);
     else if (status === "success") Toast.success(message);
   }

@@ -187,6 +187,7 @@ function useHome() {
           username: user.username,
           name: user.name,
           profileImageUrl: user.profileImageUrl,
+          bookmarks:post?.bookmarks ?? [],
           comments: sortedComments,
         };
       });

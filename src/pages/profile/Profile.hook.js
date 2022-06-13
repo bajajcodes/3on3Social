@@ -76,6 +76,7 @@ function useProfile() {
             posts.push({
               ...q.data(),
               id: q.id,
+              bookmarks: q?.bookmarks ?? [],
               createdAt: getDate(q.data()),
             });
           });

@@ -13,7 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 function Post({ postInfo }) {
   const navigate = useNavigate();
   const [showComment, setShowComment] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const uid = useSelector((state) => state.auth?.uid);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
@@ -26,13 +27,17 @@ function Post({ postInfo }) {
     setShowComment((p) => !p);
   }
 
-  function dispatchToggleLikePost() {
+  function checkIfLoggedIn() {
     if (!isLoggedIn) {
       navigate("/login", { state: { from: location.pathname } });
     }
+  }
+
+  function dispatchToggleLikePost() {
+    checkIfLoggedIn();
     let message = "";
     let likes = [];
-    if (liked) {
+    if (isLiked) {
       likes = postInfo.likes.filter((u) => u !== uid);
       message = "Post Disliked";
     } else {
@@ -48,10 +53,37 @@ function Post({ postInfo }) {
     );
   }
 
+  function dispatchToggleBookmark() {
+    checkIfLoggedIn();
+    let message = "";
+    let bookmarks = [];
+    if (isBookmarked) {
+      bookmarks = postInfo.bookmarks.filter((u) => u !== uid);
+      message = "Post Removed From Bookmarks";
+    } else {
+      message = "Post Added To Bookmarks";
+      bookmarks = [...postInfo.bookmarks, uid];
+    }
+    dispatch(
+      updatePost({
+        postId: postInfo.id,
+        postInfo: { bookmarks },
+        message,
+      })
+    );
+  }
+
   useEffect(() => {
-    const liked = postInfo.likes.find((u) => u === uid) ? true : false;
-    setLiked(liked);
+    const isLiked = postInfo.likes.find((u) => u === uid) ? true : false;
+    setIsLiked(isLiked);
   }, [postInfo.likes]);
+
+  useEffect(() => {
+    const isBookmarked = postInfo.bookmarks.find((u) => u === uid)
+      ? true
+      : false;
+    setIsBookmarked(isBookmarked);
+  }, [postInfo.bookmarks]);
 
   return (
     <article className="p-4 bg-white w-full max-w-xl grid gap-2 mb-4">
@@ -87,17 +119,26 @@ function Post({ postInfo }) {
             />
           )}
           <div className="flex flex-wrap place-items-center justify-between mt-2">
-            <button onClick={() => dispatchToggleLikePost()}>
-              <LikeIcon liked={liked} />
+            <button onClick={() => dispatchToggleLikePost()} className="flex">
+              <LikeIcon isLiked={isLiked} />
+              {postInfo.likes.length > 0 && (
+                <span>{postInfo.likes.length}</span>
+              )}
             </button>
-            <button onClick={() => toggleCommentDisplay()}>
+            <button onClick={() => toggleCommentDisplay()} className="flex">
               <CommentIcon />
+              {postInfo.comments.length > 0 && (
+                <span>{postInfo.comments.length}</span>
+              )}
             </button>
             <button>
               <ShareIcon />
             </button>
-            <button>
-              <BookmarksIcon />
+            <button onClick={() => dispatchToggleBookmark()} className="flex">
+              <BookmarksIcon isBookmarked={isBookmarked} />
+              {postInfo.bookmarks.length > 0 && (
+                <span>{postInfo.bookmarks.length}</span>
+              )}
             </button>
           </div>
         </div>
