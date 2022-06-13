@@ -7,10 +7,12 @@ import { useSelector } from "react-redux";
 function useHome() {
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
   const [loggedInUserPosts, setLoggedInUserPosts] = useState([]);
   const [content, setContent] = useState([]);
   const [usersStatus, setUsersStatus] = useState("idle");
   const [postsStatus, setPostsStatus] = useState("idle");
+  const [commentsStatus, setCommentsStatus] = useState("idle");
   const [loggedInUserPostsStatus, setLoggedInUserPostsStatus] =
     useState("idle");
   const [status, setStatus] = useState("loading");
@@ -126,23 +128,66 @@ function useHome() {
     return () => loggedInUserPostsUnsubscribe && loggedInUserPostsUnsubscribe();
   }, [loggedInProfileStatus]);
 
+  useEffect(() => {
+    setCommentsStatus("loading");
+    let commentsUnsubscribe = null;
+    let commentsQuery = null;
+    if (loggedInProfileStatus === "success") {
+      if (userInfo.following.length !== 0) {
+        commentsQuery = query(
+          collection(db, "comments"),
+        );
+        commentsUnsubscribe = onSnapshot(
+          commentsQuery,
+          (querySnapshot) => {
+            const comments = [];
+            querySnapshot.forEach((q) =>
+              comments.push({
+                ...q.data(),
+                id: q.id,
+                createdAt: getDate(q.data()),
+              })
+            );
+            setComments(comments);
+            setCommentsStatus("success");
+          },
+          (error) => {
+            Toast.error(error.message);
+            setCommentsStatus("failed");
+          }
+        );
+      } else {
+        setComments([]);
+        setCommentsStatus("success");
+      }
+    }
+    return () => commentsUnsubscribe && commentsUnsubscribe();
+  }, [loggedInProfileStatus]);
+
   async function updateContent() {
     if (
       usersStatus === "success" &&
       postsStatus === "success" &&
-      loggedInUserPostsStatus === "success"
+      commentsStatus === "success" &&
+      loggedInUserPostsStatus === "success" 
     ) {
       setStatus("loading");
       const allPosts = [].concat(posts, loggedInUserPosts);
       const allUsers = [].concat(users, userInfo);
+      const allComments = [].concat(comments);
       const content = allPosts.map((post) => {
         const user = allUsers.find((user) => user.username === post.username);
+        const comments = allComments.filter(
+          (comment) => comment.postId === post.id
+        );
+        const sortedComments = filterPosts("Newest", comments);
         return {
           ...post,
           uid: user?.id ?? user.uid,
           username: user.username,
           name: user.name,
           profileImageUrl: user.profileImageUrl,
+          comments: sortedComments,
         };
       });
       setContent(filterPosts("Newest", content));
@@ -158,9 +203,11 @@ function useHome() {
     usersStatus,
     postsStatus,
     loggedInUserPostsStatus,
+    commentsStatus,
     users,
     posts,
     loggedInUserPosts,
+    comments,
   ]);
 
   return { content, status };
