@@ -98,7 +98,8 @@ function Profile() {
                       username: userInfo.username,
                       createdAt: post.createdAt,
                       content: post.content,
-                      comments:post.comments,
+                      comments: post.comments,
+                      likes: post.likes,
                       id: post.id,
                       uid: userInfo.uid,
                     }}

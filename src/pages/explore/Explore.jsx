@@ -45,6 +45,7 @@ function Explore() {
                   createdAt: post.createdAt,
                   content: post.content,
                   comments: post.comments,
+                  likes: post.likes,
                   id: post.id,
                   uid: post.uid,
                 }}

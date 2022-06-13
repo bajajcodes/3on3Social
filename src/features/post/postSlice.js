@@ -41,7 +41,7 @@ const postSlice = createSlice({
       thunkLoading(state);
     },
     [updatePost.fulfilled]: (state, action) => {
-      thunkFulfilled(state, "Post Updated", action.payload, "postId");
+      thunkFulfilled(state, action.payload.message, action.payload, "postId");
     },
     [updatePost.rejected]: (state, action) => {
       thunkRejected(state, action, "postId", null);

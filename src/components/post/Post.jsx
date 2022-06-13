@@ -5,14 +5,18 @@ import { PostComment } from "../comments/PostComment";
 import { Comment } from "../comments/Comment";
 import { LikeIcon, CommentIcon, ShareIcon, BookmarksIcon } from "icons";
 import { parseDateToDMY } from "utils";
-import { useState } from "react";
+import { updatePost } from "features";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 function Post({ postInfo }) {
   const navigate = useNavigate();
   const [showComment, setShowComment] = useState(false);
+  const [liked, setLiked] = useState(false);
   const uid = useSelector((state) => state.auth?.uid);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
   function onClickHandler() {
     navigate(`/profile/${postInfo.uid}`);
@@ -21,6 +25,33 @@ function Post({ postInfo }) {
   function toggleCommentDisplay() {
     setShowComment((p) => !p);
   }
+
+  function dispatchToggleLikePost() {
+    if (!isLoggedIn) {
+      navigate("/login", { state: { from: location.pathname } });
+    }
+    let message = "";
+    let likes = [];
+    if (liked) {
+      likes = postInfo.likes.filter((u) => u !== uid);
+      message = "Post Disliked";
+    } else {
+      message = "Post Liked";
+      likes = [...postInfo.likes, uid];
+    }
+    dispatch(
+      updatePost({
+        postId: postInfo.id,
+        postInfo: { likes },
+        message,
+      })
+    );
+  }
+
+  useEffect(() => {
+    const liked = postInfo.likes.find((u) => u === uid) ? true : false;
+    setLiked(liked);
+  }, [postInfo.likes]);
 
   return (
     <article className="p-4 bg-white w-full max-w-xl grid gap-2 mb-4">
@@ -56,8 +87,8 @@ function Post({ postInfo }) {
             />
           )}
           <div className="flex flex-wrap place-items-center justify-between mt-2">
-            <button>
-              <LikeIcon />
+            <button onClick={() => dispatchToggleLikePost()}>
+              <LikeIcon liked={liked} />
             </button>
             <button onClick={() => toggleCommentDisplay()}>
               <CommentIcon />

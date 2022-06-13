@@ -30,13 +30,13 @@ const createNewPost = createAsyncThunk(
 
 const updatePost = createAsyncThunk(
   "thunk/updatePost",
-  async ({ postId, postInfo }, { rejectWithValue }) => {
+  async ({ postId, postInfo, message="Post Updated" }, { rejectWithValue }) => {
     try {
       const postRef = doc(db, "posts", postId);
       await updateDoc(postRef, {
         ...postInfo,
       });
-      return { postId: postId };
+      return { postId: postId, message };
     } catch (error) {
       return rejectWithValue(error.message ?? "Error Message NA");
     }
