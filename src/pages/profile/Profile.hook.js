@@ -20,8 +20,9 @@ function useProfile() {
   const [userInfo, setUserInfo] = useState({});
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
+  const [postsWithComments, setPostsWithComments] = useState([]);
   const [postStatus, setPostStatus] = useState("idle");
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState("loading");
   const [commentsStatus, setCommentsStatus] = useState("idle");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,7 +34,6 @@ function useProfile() {
 
   useEffect(() => {
     const uid = location.pathname.split("/")[2];
-    setStatus("loading");
     setUserInfoStatus("loading");
     const unsubscribe = onSnapshot(
       doc(db, "users", uid),
@@ -148,7 +148,7 @@ function useProfile() {
           comments: sortedComments,
         };
       });
-      setPosts(postsWithComments);
+      setPostsWithComments(postsWithComments);
       setStatus("success");
     }
   }, [userInfoStatus, postStatus, commentsStatus, userInfo, posts, comments]);
@@ -191,7 +191,7 @@ function useProfile() {
     uid,
     following,
     userInfo,
-    posts,
+    posts: postsWithComments,
     status,
     dispatchFollowUser,
     dispatchUnfollowUser,
