@@ -29,6 +29,7 @@ function Home() {
                     username: post.username,
                     createdAt: post.createdAt,
                     content: post.content,
+                    comments:post.comments,
                     id: post.id,
                     uid: post.uid,
                   }}
