@@ -1,23 +1,24 @@
 import { PasswordVisibleIcon, PasswordInvisibleIcon } from "icons";
 import { useState, useEffect } from "react";
 
-function FormInput({ info }) {
+function FormInput({ info, extraClasses, updateInputValueToParent }) {
   const [inputValue, setInputValue] = useState(info?.value ?? "");
 
   function onChangeHandler(event) {
     const value = event.target.value;
     setInputValue(value);
+    if (updateInputValueToParent) {
+      updateInputValueToParent(value);
+    }
   }
 
   useEffect(() => {
-    if (info.value) {
-      setInputValue(info.value);
-    }
+    setInputValue(info.value);
   }, [info.value]);
 
   return (
     <label className="grid w-full">
-      <span className="w-max">{info.labelText}</span>
+      {info.labelText && <span className="w-max">{info.labelText}</span>}
       {info.icon && info.type === "password" && (
         <PasswordVisibleIcon toggleInputType={info.toggleInputType} />
       )}
@@ -27,7 +28,7 @@ function FormInput({ info }) {
       <input
         className={`px-2 py-1 border-2 border-solid border-black col-start-1 col-end-3 ${
           info.type !== "password" ? "font-medium" : "font-black"
-        } placeholder:font-medium active:border-2 focus:border-2 active:outline-none focus:outline-none`}
+        } placeholder:font-medium active:border-2 focus:border-2 active:outline-none focus:outline-none ${extraClasses}`}
         name={info.name ?? "NA"}
         type={info.type ?? "text"}
         value={inputValue}
