@@ -72,10 +72,17 @@ function Post({ editPostModalOpened }) {
             <span role="button">
               <GifIcon />
             </span>
-            <span role="button" onClick={() => setShowEmojiPicker((p) => !p)}>
+            <span
+              role="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowEmojiPicker((p) => !p);
+              }}
+            >
               <EmojiIcon />
               {showEmojiPicker && (
                 <Picker
+                  native
                   disableSearchBar
                   skinTone={SKIN_TONE_LIGHT}
                   onEmojiClick={onEmojiClick}
@@ -83,8 +90,8 @@ function Post({ editPostModalOpened }) {
                     width: "228px",
                     height: "228px",
                     position: "fixed",
-                    left: "5%",
-                    top: "40%",
+                    left: "30%",
+                    top: "80%",
                   }}
                 />
               )}

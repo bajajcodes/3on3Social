@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 function getToast(type, message) {
   toast[type](message, {
-    position: "top-right",
+    position: "top-left",
     autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,

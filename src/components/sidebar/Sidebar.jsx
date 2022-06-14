@@ -10,13 +10,15 @@ function Sidebar() {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.profile.userInfo);
   const [peoples, setPeoples] = useState([]);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
     let unsubscribe = getPeoples(
       userInfo?.username,
       userInfo?.following,
       setPeoples,
-      true
+      true,
+      setIsEmpty
     );
     return () => unsubscribe();
   }, [userInfo]);
@@ -35,10 +37,13 @@ function Sidebar() {
             Show More
           </span>
         </div>
-        {peoples.length === 0 && (
+        {peoples.length === 0 && !isEmpty && (
           <div className="m-4 relative">
             <Loader />
           </div>
+        )}
+        {isEmpty && (
+          <h1 className="p-1 text-center text-xl font-bold">No person left to be followed</h1>
         )}
         <PeopleCards peoples={peoples} />
       </section>

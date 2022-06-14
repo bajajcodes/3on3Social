@@ -7,7 +7,13 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
-function getPeoples(username, following, setPeoples, isLimited = false) {
+function getPeoples(
+  username,
+  following,
+  setPeoples,
+  isLimited = false,
+  setIsEmpty
+) {
   let usersQuery = null;
   if (username) {
     if (following.length > 0) {
@@ -57,6 +63,11 @@ function getPeoples(username, following, setPeoples, isLimited = false) {
         });
       }
     });
+    if (peoples.length === 0) {
+      if (setIsEmpty) {
+        setIsEmpty(true);
+      }
+    }
     setPeoples(peoples);
   });
 }

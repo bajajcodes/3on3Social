@@ -19,9 +19,9 @@ function Landing() {
         <div></div>
         <div className="uppercase leading-9 font-bold grid gap-2">
           {data.map(([title, text], index) => (
-            <span className="text-3xl lg:text-4xl" key={index}>
+            <span className="text-3xl lg:text-4xl grid lg:inline" key={index}>
               <span className="text-muted-text font-bold">{title}</span>{" "}
-              <span className="text-base">{text}</span>
+              <span className="text-sm lg:text-base">{text}</span>
             </span>
           ))}
         </div>

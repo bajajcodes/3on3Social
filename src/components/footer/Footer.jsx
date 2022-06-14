@@ -2,7 +2,7 @@ import { Hero } from "../hero/Hero";
 
 function Footer() {
   return (
-    <footer className="footer relative p-2 pb-4 grid gap-4 bg-white border-t-4 border-solid border-t-black lg:grid-cols-2">
+    <footer className="footer relative p-2 pb-16 grid gap-4 bg-white border-t-4 border-solid border-t-black lg:grid-cols-2 lg:pb-2">
       <section className="">
         <Hero />
         <p>

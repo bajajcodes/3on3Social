@@ -20,7 +20,7 @@ function Explore() {
           {filters.map((filter, index) => (
             <span
               className={`p-2 text-center font-semibold border-solid border-2 border-muted-text hover:bg-fill-background ${
-                activeFilter === filter ? "bg-fill-background" : ""
+                activeFilter === filter ? "bg-slate-300" : ""
               }`}
               role="button"
               key={index}
