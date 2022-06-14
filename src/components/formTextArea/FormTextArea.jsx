@@ -31,6 +31,9 @@ function FormTextArea({
     if (value && mergeWithInputValue) {
       setInputValue(value);
     }
+    if (mergeWithInputValue === "") {
+      setInputValue(mergeWithInputValue);
+    }
   }, [mergeWithInputValue]);
 
   return (

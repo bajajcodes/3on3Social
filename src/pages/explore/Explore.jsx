@@ -19,8 +19,8 @@ function Explore() {
         <section className="p-1 grid w-full grid-cols-[repeat(auto-fit,minmax(max-content,110px))] gap-2 mb-2">
           {filters.map((filter, index) => (
             <span
-              className={`p-2 text-center font-semibold border-solid border-2 border-muted-text hover:bg-fill-background ${
-                activeFilter === filter ? "bg-slate-300" : ""
+              className={`p-2 text-center font-semibold border-solid border-2 border-muted-text hover:bg-gray-300 ${
+                activeFilter === filter ? "bg-gray-300" : ""
               }`}
               role="button"
               key={index}

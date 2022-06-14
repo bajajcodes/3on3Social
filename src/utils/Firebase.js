@@ -12,9 +12,13 @@ function getPeoples(
   following,
   setPeoples,
   isLimited = false,
-  setIsEmpty
+  setIsEmpty,
+  setStatus
 ) {
   let usersQuery = null;
+  if(setStatus){
+    setStatus("loading");
+  }
   if (username) {
     if (following.length > 0) {
       if (isLimited) {
@@ -63,11 +67,17 @@ function getPeoples(
         });
       }
     });
-    if (peoples.length === 0) {
-      if (setIsEmpty) {
+    if (setStatus) {
+      setStatus("success");
+    }
+    if (setIsEmpty) {
+      if (peoples.length === 0) {
         setIsEmpty(true);
+      } else {
+        setIsEmpty(false);
       }
     }
+
     setPeoples(peoples);
   });
 }
