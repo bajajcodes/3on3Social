@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Landing, Home, Profile, People, Explore } from "pages";
+import { Landing, Home, Profile, People, Explore, Bookmarks } from "pages";
 import { Signup, Login } from "features";
 import { CheckAuth } from "./CheckAuth";
 import { RequiresAuth } from "./RequiresAuth";
@@ -30,6 +30,14 @@ function RouteSwitch() {
           <CheckAuth>
             <Login />
           </CheckAuth>
+        }
+      />
+      <Route
+        path="/bookmarks"
+        element={
+          <RequiresAuth>
+            <Bookmarks />
+          </RequiresAuth>
         }
       />
       <Route path="/profile/:uid" element={<Profile />} />
