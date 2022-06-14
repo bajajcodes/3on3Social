@@ -5,12 +5,16 @@ import { usePostComment } from "./PostComment.hook";
 import { CloseIcon } from "icons";
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function PostComment({ postId, edit }) {
+  const uid = useSelector((state) => state.auth.uid);
   const { profileImageUrl } = useSelector((state) => state.profile.userInfo);
   const { validateAndPostComment, validateAndUpdateComment } = usePostComment();
   const isFormHasChanges = useRef(false);
   const [contentValue, setContentValue] = useState("");
+  const navigate = useNavigate();
+
 
   function clearInputs() {
     setContentValue("");
@@ -30,6 +34,10 @@ function PostComment({ postId, edit }) {
     }
   }
 
+  function onClickHandler() {
+    navigate(`/profile/${uid}`);
+  }
+
   useEffect(() => {
     if (edit?.show) {
       setContentValue(edit.content);
@@ -38,7 +46,7 @@ function PostComment({ postId, edit }) {
 
   return (
     <article className="bg-white w-full grid grid-cols-[max-content_1fr] gap-2">
-      <ProfilePhoto source={profileImageUrl} />
+      <ProfilePhoto source={profileImageUrl} onClickHandler={() => onClickHandler()}/>
       <form
         onSubmit={(e) => submitForm(e)}
         onChange={() => (isFormHasChanges.current = true)}

@@ -6,11 +6,14 @@ import { parseDateToDMY } from "utils";
 import { deleteComment } from "features";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Comment({ commentInfo, replyingTo, postId }) {
   const [edit, setEdit] = useState(false);
   const uid = useSelector((state) => state.auth.uid);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   function dispatchDeleteComment() {
     dispatch(deleteComment({ commentId: commentInfo.id, postId, uid }));
   }
@@ -21,11 +24,19 @@ function Comment({ commentInfo, replyingTo, postId }) {
     }
     setEdit((p) => !p);
   }
+
+  function onClickHandler() {
+    navigate(`/profile/${commentInfo.userInfo.uid}`);
+  }
+
   return (
     <>
       {!edit && (
         <article className="bg-white w-full grid gap-2 grid-cols-[max-content_1fr]">
-          <ProfilePhoto source={commentInfo.userInfo.profileImageUrl} />
+          <ProfilePhoto
+            source={commentInfo.userInfo.profileImageUrl}
+            onClickHandler={() => onClickHandler()}
+          />
           <div>
             <div className="w-full flex flex-wrap place-items-center">
               <DisplayName
