@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 function Landing() {
   const navigate = useNavigate();
   return (
-    <main className="main bg-primary-background grid place-items-center max-w-max lg:grid-cols-2">
-      <figure className="w-full">
+    <main className="main bg-primary-background grid place-items-center max-w-max lg:grid-cols-2 m-auto">
+      <div className="w-full h-0 pb-[96.67%] relative bg-cover bg-no-repeat">
         <img
           src="/assets/images/landing.png"
           alt="Discussion over how to be 3on3"
-          className="max-w-[80%] my-0 mx-auto"
+          className="w-full h-auto absolute top-0"
           loading="eager"
         />
-      </figure>
+      </div>
       <section className="p-4 mt-[-4rem] max-w-xl grid grid-rows-[max-content_5px_max-content_5px_repeat(2,max-content)] place-content-center place-items-center gap-2 lg:mt-0">
         <AppHeading />
         <div></div>
