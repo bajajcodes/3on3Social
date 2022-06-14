@@ -37,6 +37,10 @@
 
 ## Video Preview
 
+https://user-images.githubusercontent.com/29247011/173555395-2f917d03-9a35-45b5-8369-6c09d69722bf.mp4
+
+https://user-images.githubusercontent.com/29247011/173555369-dfccc51a-384a-4edd-a4c1-d3708862647c.mp4
+
 ## Get App From Here
 [3on3 Social](https://3on3social.netlify.app/)
 
