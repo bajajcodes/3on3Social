@@ -28,7 +28,7 @@ function FormInput({ info, extraClasses, updateInputValueToParent }) {
       <input
         className={`px-2 py-1 border-2 border-solid border-black col-start-1 col-end-3 ${
           info.type !== "password" ? "font-medium" : "font-black"
-        } placeholder:font-medium active:border-2 focus:border-2 active:outline-none focus:outline-none ${extraClasses}`}
+        } placeholder:font-medium placeholder-shown:text-ellipsis active:border-2 focus:border-2 active:outline-none focus:outline-none ${extraClasses}`}
         name={info.name ?? "NA"}
         type={info.type ?? "text"}
         value={inputValue}

@@ -42,7 +42,7 @@ function PostComment({ postId, edit }) {
       <form
         onSubmit={(e) => submitForm(e)}
         onChange={() => (isFormHasChanges.current = true)}
-        className="grid grid-cols-[1fr_max-content_max-content] gap-1 place-items-center"
+        className="grid gap-1 place-items-center"
       >
         <FormInput
           info={{
@@ -56,18 +56,20 @@ function PostComment({ postId, edit }) {
           updateInputValueToParent={(v) => {
             setContentValue(v);
           }}
-          extraClasses="bg-primary-background"
+          extraClasses="bg-primary-background w-11/12"
         />
-        <Button
-          name={!edit?.show ? "post" : "update"}
-          text={!edit?.show ? "Post" : "Update"}
-          isPrimary
-        />
-        {edit?.show && (
-          <button>
-            <CloseIcon onClickFunc={edit.setEdit} />
-          </button>
-        )}
+        <div className="flex place-items-center">
+          <Button
+            name={!edit?.show ? "post" : "update"}
+            text={!edit?.show ? "Post" : "Update"}
+            isPrimary
+          />
+          {edit?.show && (
+            <button className="ml-1">
+              <CloseIcon onClickFunc={edit.setEdit} />
+            </button>
+          )}
+        </div>
       </form>
     </article>
   );

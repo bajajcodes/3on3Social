@@ -43,7 +43,7 @@ function Comment({ commentInfo, replyingTo, postId }) {
               <span className="text-muted-text">Replying to</span>
               <span className="text-red-500 font-medium"> @{replyingTo}</span>
             </div>
-            <div className="grid grid-cols-[1fr_max-content]">
+            <div className="grid grid-cols-[1fr_max-content] items-center">
               <pre className="text-base whitespace-pre-line break-words pre-formatting">
                 {commentInfo.content}
               </pre>
